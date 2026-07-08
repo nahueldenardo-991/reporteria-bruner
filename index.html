@@ -1,0 +1,1588 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reporteria Junio 2026 | Instituto Bruner</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f6f8;
+      --surface: #ffffff;
+      --surface-2: #eef3f6;
+      --ink: #18212f;
+      --muted: #637083;
+      --line: #d6dee7;
+      --blue: #1f5d8f;
+      --teal: #0f766e;
+      --green: #20744a;
+      --amber: #b35b00;
+      --red: #b42318;
+      --shadow: 0 10px 28px rgba(24, 33, 47, 0.08);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 2px 14px rgba(24, 33, 47, 0.06);
+      backdrop-filter: blur(8px);
+    }
+
+    .topbar {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      color: var(--blue);
+      letter-spacing: 0;
+    }
+
+    .subhead {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    button,
+    .file-label {
+      min-height: 36px;
+      padding: 8px 11px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+
+    select {
+      min-height: 30px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      padding: 4px 8px;
+    }
+
+    button.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+    button.good { background: var(--teal); border-color: var(--teal); color: #fff; }
+    button.warn { background: #fff6e5; border-color: #f1c476; color: #6f3b00; }
+    button:hover, .file-label:hover { filter: brightness(0.98); }
+    button:disabled, .file-label.locked {
+      opacity: 0.48;
+      cursor: not-allowed;
+      filter: none;
+    }
+    input[type="file"] { display: none; }
+
+    main {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 16px 18px 34px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 14px;
+    }
+
+    .tab {
+      min-width: 108px;
+      justify-content: center;
+      background: #fff;
+    }
+
+    .tab.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+
+    .view { display: none; }
+    .view.active { display: block; }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .metric {
+      padding: 14px;
+      min-height: 108px;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .value {
+      margin-top: 7px;
+      font-size: 29px;
+      font-weight: 800;
+      color: var(--blue);
+    }
+
+    .note {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(330px, 0.85fr);
+      gap: 14px;
+      margin-top: 14px;
+      align-items: start;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h2, h3 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    .pill {
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #e8f1fb;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .pill.locked {
+      background: #fee7e5;
+      color: var(--red);
+    }
+
+    .pill.unlocked {
+      background: #e8f6ee;
+      color: var(--green);
+    }
+
+    .body { padding: 12px 14px 14px; }
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 820px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 9px 8px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f8fafc;
+      color: #314154;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    td.num, th.num { text-align: right; }
+    tr.total td { font-weight: 800; background: #f7fbff; }
+
+    input.sales {
+      width: 86px;
+      min-height: 34px;
+      border: 1px solid #b8c5d4;
+      border-radius: 6px;
+      padding: 6px 8px;
+      font: inherit;
+      text-align: right;
+      background: #fff;
+    }
+
+    .readonly-sales {
+      display: inline-flex;
+      min-width: 44px;
+      justify-content: flex-end;
+      font-weight: 800;
+      color: var(--blue);
+    }
+
+    input.sales:disabled,
+    .field input:disabled {
+      background: #eef1f5;
+      color: #7a8797;
+      cursor: not-allowed;
+    }
+
+    input.sales:focus {
+      outline: 2px solid rgba(31, 93, 143, 0.2);
+      border-color: var(--blue);
+    }
+
+    .status {
+      display: inline-flex;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status.good { background: #e8f6ee; color: var(--green); }
+    .status.mid { background: #fff4db; color: var(--amber); }
+    .status.empty { background: #eef1f5; color: var(--muted); }
+    .status.bad { background: #fee7e5; color: var(--red); }
+
+    .bars {
+      display: grid;
+      gap: 10px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: minmax(130px, 1fr) minmax(120px, 2fr) 56px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .bar-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #263648;
+    }
+
+    .bar-track {
+      height: 12px;
+      background: #e4ebf1;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--teal));
+      border-radius: inherit;
+      min-width: 2px;
+    }
+
+    .commercial-hero {
+      margin-bottom: 14px;
+      padding: 16px;
+      background: #102338;
+      color: #fff;
+      border-radius: var(--radius);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      box-shadow: var(--shadow);
+    }
+
+    .commercial-hero h2 {
+      font-size: 20px;
+    }
+
+    .commercial-hero .hint {
+      color: #c7d5e5;
+      margin-top: 4px;
+    }
+
+    .commercial-hero .pill {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .metric.accent-blue { border-top: 4px solid var(--blue); }
+    .metric.accent-teal { border-top: 4px solid var(--teal); }
+    .metric.accent-green { border-top: 4px solid var(--green); }
+    .metric.accent-amber { border-top: 4px solid var(--amber); }
+    .metric.accent-red { border-top: 4px solid var(--red); }
+
+    .progress-cell {
+      min-width: 150px;
+    }
+
+    .progress-wrap {
+      display: grid;
+      grid-template-columns: minmax(74px, 1fr) 46px;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .progress-track {
+      height: 10px;
+      background: #e4ebf1;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: var(--teal);
+      min-width: 2px;
+    }
+
+    .progress-fill.hot { background: var(--red); }
+    .progress-fill.mid { background: var(--amber); }
+    .progress-fill.open { background: var(--green); }
+
+    .course-name {
+      font-weight: 800;
+      color: #263648;
+    }
+
+    .course-meta {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    label.field {
+      display: grid;
+      gap: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .field input {
+      min-height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: var(--ink);
+      font: inherit;
+      background: #fff;
+    }
+
+    .toast {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 30;
+      min-width: 240px;
+      max-width: min(420px, calc(100vw - 32px));
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: #122033;
+      color: #fff;
+      box-shadow: 0 14px 32px rgba(18, 32, 51, 0.24);
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1050px) {
+      .topbar, .layout, .split { grid-template-columns: 1fr; }
+      .actions { justify-content: flex-start; }
+      .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      main, .topbar { padding-left: 12px; padding-right: 12px; }
+      h1 { font-size: 19px; }
+      .kpis { grid-template-columns: 1fr; }
+      .commercial-hero { grid-template-columns: 1fr; }
+      .value { font-size: 25px; }
+      .field-grid { grid-template-columns: 1fr; }
+      button, .file-label { flex: 1 1 auto; justify-content: center; }
+      .bar-row { grid-template-columns: 1fr; gap: 5px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div>
+        <h1>Reporteria Junio 2026 | Instituto Bruner</h1>
+        <div class="subhead">Historico cargado desde Excel · junio cerrado al 30/06/2026 · ventas editables por mes</div>
+      </div>
+      <div class="actions">
+        <label class="file-label" title="Cambiar mes visible">
+          Mes
+          <select id="monthSelect" aria-label="Mes visible"></select>
+        </label>
+        <span class="pill locked" id="editStatus">Edicion bloqueada</span>
+        <button id="unlockBtn" title="Desbloquear edicion con clave">Desbloquear</button>
+        <button class="primary" id="saveBtn" title="Guardar ventas manuales">Guardar</button>
+        <button id="exportBtn" title="Descargar respaldo JSON">Backup</button>
+        <label class="file-label" id="importLabel" title="Importar respaldo JSON">
+          Importar
+          <input id="importInput" type="file" accept="application/json">
+        </label>
+        <button class="good" id="csvBtn" title="Descargar CSV para asesoras">CSV</button>
+        <button class="good" id="htmlBtn" title="Descargar una copia HTML con las ventas incrustadas">HTML con ventas</button>
+        <button class="warn" id="resetBtn" title="Borrar ventas guardadas">Limpiar</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <nav class="tabs" aria-label="Vistas">
+      <button class="tab active" data-view="dashboard">Dashboard</button>
+      <button class="tab" data-view="cba">CBA</button>
+      <button class="tab" data-view="vcp">VCP</button>
+      <button class="tab" data-view="isrem">ISREM</button>
+      <button class="tab" data-view="online">Online</button>
+      <button class="tab" data-view="comercial">Comercial</button>
+      <button class="tab" data-view="config">Config</button>
+    </nav>
+
+    <section id="dashboard" class="view active">
+      <div class="kpis" id="kpis"></div>
+      <div class="layout">
+        <article class="card">
+          <div class="section-head">
+            <h2>Resumen general</h2>
+            <span class="pill">CBA/VCP/ISREM + Online/no mapeado = HubSpot</span>
+          </div>
+          <div class="table-wrap">
+            <table id="summaryTable"></table>
+          </div>
+        </article>
+        <article class="card">
+          <div class="section-head">
+            <h2>Leads por grupo</h2>
+            <span class="pill" id="controlPill">Conciliado</span>
+          </div>
+          <div class="body">
+            <div class="bars" id="groupBars"></div>
+          </div>
+        </article>
+      </div>
+      <div class="split">
+        <article class="card">
+          <div class="section-head">
+            <h2>Top CBA por leads</h2>
+            <span class="pill">Junio</span>
+          </div>
+          <div class="body"><div class="bars" id="cbaBars"></div></div>
+        </article>
+        <article class="card">
+          <div class="section-head">
+            <h2>Top VCP por leads</h2>
+            <span class="pill">Junio</span>
+          </div>
+          <div class="body"><div class="bars" id="vcpBars"></div></div>
+        </article>
+      </div>
+      <article class="card" style="margin-top: 14px;">
+        <div class="section-head">
+          <h2>Top ISREM por leads</h2>
+          <span class="pill">Junio</span>
+        </div>
+        <div class="body"><div class="bars" id="isremBars"></div></div>
+      </article>
+    </section>
+
+    <section id="cba" class="view">
+      <article class="card">
+        <div class="section-head">
+          <h2>CBA · Cordoba Capital</h2>
+          <span class="pill">Ventas desde planillas</span>
+        </div>
+        <div class="table-wrap"><table id="cbaTable"></table></div>
+      </article>
+    </section>
+
+    <section id="vcp" class="view">
+      <article class="card">
+        <div class="section-head">
+          <h2>VCP · Villa Carlos Paz</h2>
+          <span class="pill">Ventas desde planillas</span>
+        </div>
+        <div class="table-wrap"><table id="vcpTable"></table></div>
+      </article>
+    </section>
+
+    <section id="isrem" class="view">
+      <article class="card">
+        <div class="section-head">
+          <h2>ISREM Â· Remedios de Escalada</h2>
+          <span class="pill">Ventas desde planillas</span>
+        </div>
+        <div class="table-wrap"><table id="isremTable"></table></div>
+      </article>
+    </section>
+
+    <section id="online" class="view">
+      <div class="layout">
+        <article class="card">
+          <div class="section-head">
+            <h2>Online / no mapeado</h2>
+            <span class="pill">Medicion separada</span>
+          </div>
+          <div class="table-wrap"><table id="onlineTable"></table></div>
+        </article>
+        <article class="card">
+          <div class="section-head">
+            <h2>Distribucion</h2>
+            <span class="pill">208 leads</span>
+          </div>
+          <div class="body"><div class="bars" id="onlineBars"></div></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="comercial" class="view">
+      <div class="commercial-hero">
+        <div>
+          <h2>Panel general comercial</h2>
+          <div class="hint">Fuente: Inscripcion Bruner Instituto (Respuestas) - snapshot al 08/07/2026.</div>
+        </div>
+        <label class="file-label" title="Filtrar cursos por mes de inicio">
+          Inicio
+          <select id="commercialMonthSelect" aria-label="Mes de inicio comercial"></select>
+        </label>
+        <button class="good" id="commercialRefreshBtn" title="Actualizar datos desde Sheets y HubSpot">Actualizar todo</button>
+      </div>
+      <div class="kpis" id="commercialKpis"></div>
+      <div class="layout">
+        <article class="card">
+          <div class="section-head">
+            <h2>Cupos por sede</h2>
+            <span class="pill">Cursos en oferta</span>
+          </div>
+          <div class="table-wrap"><table id="commercialSedeTable"></table></div>
+        </article>
+        <article class="card">
+          <div class="section-head">
+            <h2>Ranking ventas asesoras</h2>
+            <span class="pill">Ventas reales</span>
+          </div>
+          <div class="body"><div class="bars" id="commercialAdvisorBars"></div></div>
+        </article>
+      </div>
+      <article class="card">
+        <div class="section-head">
+          <h2>Cursos en oferta</h2>
+          <span class="pill">Cupos restantes</span>
+        </div>
+        <div class="table-wrap"><table id="commercialCourseTable"></table></div>
+      </article>
+      <div class="split">
+        <article class="card">
+          <div class="section-head">
+            <h2>Evolucion mensual</h2>
+            <span class="pill">Inscripciones</span>
+          </div>
+          <div class="body"><div class="bars" id="commercialMonthBars"></div></div>
+        </article>
+        <article class="card">
+          <div class="section-head">
+            <h2>Objetivo por mes</h2>
+            <span class="pill">Cupos restantes</span>
+          </div>
+          <div class="table-wrap"><table id="commercialMonthTable"></table></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="config" class="view">
+      <article class="card">
+        <div class="section-head">
+          <h2>Configuracion de tablero</h2>
+          <span class="pill">Se recalcula al guardar</span>
+        </div>
+        <div class="body">
+          <div class="field-grid">
+            <label class="field">Dias del mes
+              <input id="elapsedDays" type="number" min="1" max="31" step="1">
+            </label>
+            <label class="field">Dias habiles estimados
+              <input id="businessDays" type="number" min="1" max="31" step="1">
+            </label>
+            <label class="field">Total HubSpot
+              <input id="hubspotTotal" type="number" min="0" step="1">
+            </label>
+          </div>
+          <p class="hint">
+            Las ventas se guardan en este navegador. Para moverlas a otro equipo o celular, usa Backup e Importar.
+            El boton CSV descarga la tabla con leads, ventas, conversion y cumplimiento.
+          </p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const STORAGE_KEY = "bruner_reporteria_multimes_v3";
+    const EDIT_PASSWORD = "Bruner2026";
+    const EMBEDDED_STATE = null;
+    const LEGACY_STORAGE_KEYS = [
+      "bruner_reporteria_junio_2026_cierre_v2",
+      "bruner_reporteria_junio_2026_v1"
+    ];
+    const LEGACY_JUNE_ID_MAP = {
+      cba_electricista: "jun_2026_cba_0",
+      cba_cerrajeria: "jun_2026_cba_1",
+      cba_muebles: "jun_2026_cba_2",
+      cba_soldadura: "jun_2026_cba_3",
+      cba_cnc: "jun_2026_cba_4",
+      cba_microbollos: "jun_2026_cba_5",
+      cba_impresion: "jun_2026_cba_6",
+      cba_plomeria: "jun_2026_cba_7",
+      cba_molderia: "jun_2026_cba_8",
+      cba_aire: "jun_2026_cba_9",
+      cba_facturacion: "jun_2026_cba_10",
+      cba_refrigeracion: "jun_2026_cba_11",
+      cba_farmacia: "jun_2026_cba_12",
+      cba_upcycling: "jun_2026_cba_13",
+      cba_aux_elec: "jun_2026_cba_14",
+      cba_ersep: "jun_2026_cba_15",
+      vcp_molderia: "jun_2026_vcp_0",
+      vcp_soldadura: "jun_2026_vcp_1",
+      vcp_muebles: "jun_2026_vcp_2",
+      vcp_upcycling: "jun_2026_vcp_3",
+      vcp_electricidad_motos: "jun_2026_vcp_4",
+      vcp_motos: "jun_2026_vcp_5",
+      vcp_inyeccion: "jun_2026_vcp_6",
+      vcp_electricista: "jun_2026_vcp_7",
+      vcp_farmacia: "jun_2026_vcp_8",
+      vcp_facturacion: "jun_2026_vcp_9",
+      vcp_aire: "jun_2026_vcp_10",
+      vcp_plomeria: "jun_2026_vcp_11"
+    };
+
+    const baseConfig = {
+      hubspotTotal: 1868,
+      elapsedDays: 30,
+      businessDays: 30,
+      selectedMonth: "jun_2026"
+    };
+    const UPDATE_FEED_URL = "https://script.google.com/macros/s/AKfycbyhKiGC0ZzG2KpOc-TRoOih2qXUTsG2ckWi98Blyc1j0Fma_R0ec5QcAoysElUBvCo/exec";
+    const COMMERCIAL_FEED_URL = UPDATE_FEED_URL;
+    const HUBSPOT_REPORT_FEED_URL = "";
+    const COMMERCIAL_SNAPSHOT_DATE = "2026-07-08";
+
+    const cbaCourses = [
+      "Electricista Inicial", "Cerrajeria", "Muebles Armado y Diseno", "Soldadura y Herreria",
+      "CNC Programador", "Microbollos", "Impresion 3D", "Plomeria",
+      "Molderia Corte y Confeccion", "Aire Inst y Rep", "Facturacion Medica",
+      "Refrigeracion Heladeras", "Auxiliar de Farmacia", "Upcycling Moda Sustentable",
+      "Auxiliar Electricista", "ERSeP"
+    ];
+
+    const vcpCourses = [
+      "Molderia Corte y Confeccion", "Soldadura y Herreria", "Muebles Armado y Diseno",
+      "Upcycling Moda Sustentable", "Motos", "Electricista Inicial", "Aire Inst y Rep", "Plomeria", "ERSeP"
+    ];
+
+    const isremCourses = [
+      "Electricidad Motos", "Inyeccion Motos", "Auxiliar de Farmacia", "Facturacion Medica"
+    ];
+
+    const targets = {
+      cba: [10, 8, 8, 7, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+      vcp: [8, 8, 7, 5, 5, 5, 5, 5, 5],
+      isrem: [5, 5, 5, 5]
+    };
+
+    const monthData = [
+      { key: "ene_2025", label: "ENE 2025", hubspotTotal: 2553, online: [], cbaLeads: [0,270,167,175,276,142,99,188,214,18,185,0,98,0,246,0], cbaSales: [0,8,9,11,18,4,3,11,10,2,4,0,2,0,6,1], vcpLeads: [94,107,32,0,119,56,30,37,0], vcpSales: [8,15,5,0,9,9,9,4,0], isremLeads: [0,0,0,0], isremSales: [0,0,0,0] },
+      { key: "feb_2025", label: "FEB 2025", hubspotTotal: 2416, online: [], cbaLeads: [0,310,129,114,0,85,63,141,149,70,215,0,127,0,216,164], cbaSales: [0,4,7,4,0,3,8,9,10,4,7,0,7,0,6,4], vcpLeads: [97,183,64,0,135,72,20,62,0], vcpSales: [5,15,4,0,18,10,12,12,0], isremLeads: [0,0,0,0], isremSales: [0,0,0,0] },
+      { key: "mar_2025", label: "MAR 2025", hubspotTotal: 2413, online: [], cbaLeads: [0,267,303,128,176,116,32,118,131,74,22,51,52,0,283,171], cbaSales: [0,0,15,5,7,1,0,2,6,8,2,4,6,0,4,4], vcpLeads: [144,122,92,0,39,7,33,52,0], vcpSales: [2,17,8,0,13,2,5,6,0], isremLeads: [0,0,0,0], isremSales: [0,0,0,0] },
+      { key: "abr_2026", label: "ABR 2026", hubspotTotal: 1673, online: [], cbaLeads: [175,182,158,134,116,81,96,68,68,74,71,105,0,0,0,0], cbaSales: [4,9,13,6,7,5,5,5,1,3,0,4,0,0,0,1], vcpLeads: [87,69,59,0,0,53,41,36,0], vcpSales: [2,9,6,0,1,6,7,6,0], isremLeads: [0,0,0,0], isremSales: [0,0,0,0] },
+      { key: "may_2026", label: "MAY 2026", hubspotTotal: 1737, online: [], cbaLeads: [218,143,148,97,32,43,90,84,74,46,99,4,48,72,0,0], cbaSales: [5,3,8,2,3,2,6,2,1,2,1,0,0,0,0,0], vcpLeads: [89,78,58,72,38,39,6,5,0], vcpSales: [2,11,7,0,6,5,0,2,0], isremLeads: [50,39,41,24], isremSales: [2,6,0,1] },
+      { key: "jun_2026", label: "JUN 2026", hubspotTotal: 1868, online: [
+        { id: "online_hidraulica", conversion: "Facebook Lead Ads: ONLINE - HIDRAULICA", course: "Hidraulica", leads: 90 },
+        { id: "online_robotica", conversion: "Facebook Lead Ads: ONLINE - ROBOTICA", course: "Robotica", leads: 72 },
+        { id: "otros_no_mapeado", conversion: "Otros / sin conversion reciente", course: "No mapeado", leads: 5 }
+      ], cbaLeads: [185,120,93,80,58,37,69,43,108,4,129,14,140,35,0,0], cbaSales: [1,5,10,4,3,0,5,1,3,1,3,0,1,0,0,1], vcpLeads: [82,3,39,19,0,25,23,23,0], vcpSales: [2,3,5,0,2,5,1,3,2], isremLeads: [164,47,99,62], isremSales: [2,6,9,2] }
+    ];
+
+    const commercialData = {
+      updatedAt: "08/07/2026",
+      source: "Inscripcion Bruner Instituto (Respuestas)",
+      currentMonth: {
+        label: "Julio 2026 MTD",
+        through: "07/07/2026",
+        enrollments: 25,
+        sales: 14,
+        scholarships: 11,
+        bySede: [
+          { label: "Cordoba", enrollments: 14, sales: 6, scholarships: 8 },
+          { label: "Cristo Obrero", enrollments: 8, sales: 5, scholarships: 3 },
+          { label: "Remedios de Escalada", enrollments: 3, sales: 3, scholarships: 0 }
+        ],
+        byAdvisor: [
+          { label: "Meli", sales: 4, scholarships: 0, occupied: 4 },
+          { label: "Juli", sales: 4, scholarships: 0, occupied: 4 },
+          { label: "Claudia", sales: 3, scholarships: 0, occupied: 3 },
+          { label: "Susi", sales: 1, scholarships: 0, occupied: 1 },
+          { label: "Lore", sales: 1, scholarships: 0, occupied: 1 },
+          { label: "Mica", sales: 1, scholarships: 0, occupied: 1 },
+          { label: "Mati P", sales: 0, scholarships: 8, occupied: 8 },
+          { label: "Sol", sales: 0, scholarships: 3, occupied: 3 }
+        ]
+      },
+      monthly: [
+        { label: "Mar 2026", enrollments: 3 },
+        { label: "Abr 2026", enrollments: 7 },
+        { label: "May 2026", enrollments: 33 },
+        { label: "Jun 2026", enrollments: 74 },
+        { label: "Jul 2026", enrollments: 25 }
+      ],
+      courses: [
+        { sede: "Cordoba", course: "Armado de muebles", date: "04/08/2026", schedule: "Martes 20:00", code: "2026-08-04-MA-20:00-22:00-P-A-MUEBLE", capacity: 12, enrolled: 12, status: "COMPLETO" },
+        { sede: "Cordoba", course: "Armado de muebles", date: "08/09/2026", schedule: "Martes 18:00", code: "2026-09-08-MA-18:00-20:00-P-A-MUEBLE", capacity: 12, enrolled: 0, status: "En Oferta" },
+        { sede: "Cordoba", course: "Auxiliar de farmacia", date: "08/08/2026", schedule: "Sabado 11:00", code: "2026-08-08-SA-11:00-13:00-P-A-AUXFAR", capacity: 20, enrolled: 2, status: "En Oferta" },
+        { sede: "Cordoba", course: "Auxiliar de farmacia", date: "12/08/2026", schedule: "Miercoles 18:00", code: "2026-08-12-MI-18:00-20:00-P-A-AUXFAR", capacity: 20, enrolled: 2, status: "En Oferta" },
+        { sede: "Cordoba", course: "Cerrajeria", date: "07/09/2026", schedule: "Lunes 20:00", code: "2026-09-07-LU-20:00-22:00-P-A-CERRAJ", capacity: 10, enrolled: 0, status: "En Oferta" },
+        { sede: "Cordoba", course: "Electricidad Domiciliaria", date: "04/08/2026", schedule: "Martes 20:00", code: "2026-08-04-MA-20:00-22:00-P-A-IEDOMI", capacity: 15, enrolled: 0, status: "En Oferta" },
+        { sede: "Cordoba", course: "Electricidad habilitacion Cat III", date: "01/09/2026", schedule: "Martes 18:30", code: "2026-09-01-MA-18:30-21:30-P-A-EHCAT3", capacity: 20, enrolled: 3, status: "En Oferta" },
+        { sede: "Cordoba", course: "Facturacion medica", date: "21/07/2026", schedule: "Martes 18:00", code: "2026-07-21-MA-18:00-20:00-P-A-FACTME", capacity: 20, enrolled: 9, status: "En Oferta" },
+        { sede: "Cordoba", course: "Facturacion medica", date: "08/08/2026", schedule: "Sabado 09:00", code: "2026-08-08-SA-09:00-11:00-P-A-FACTME", capacity: 20, enrolled: 2, status: "En Oferta" },
+        { sede: "Cordoba", course: "Impresion 3D", date: "06/08/2026", schedule: "Jueves 18:00", code: "2026-08-06-JU-18:00-21:00-P-A-IMPR3D", capacity: 12, enrolled: 3, status: "En Oferta" },
+        { sede: "Cordoba", course: "Instalacion Aire Acondicionado", date: "05/09/2026", schedule: "Sabado 12:00", code: "2026-09-05-SA-12:00-14:00-P-A-INSAIR", capacity: 16, enrolled: 0, status: "En Oferta" },
+        { sede: "Cordoba", course: "Microbollos", date: "25/07/2026", schedule: "Sabado 09:00", code: "2026-07-25-SA-09:00-13:00-P-A-MICROB", capacity: 8, enrolled: 0, status: "En Oferta" },
+        { sede: "Cordoba", course: "Molderia, Corte y Confeccion", date: "22/07/2026", schedule: "Miercoles 18:00", code: "2026-07-22-MI-18:00-20:00-P-A-MOLDER", capacity: 14, enrolled: 2, status: "En Oferta" },
+        { sede: "Cordoba", course: "Plomeria", date: "05/08/2026", schedule: "Miercoles 18:30", code: "2026-08-05-MI-18:30-20:30-P-A-PLOMER", capacity: 12, enrolled: 3, status: "En Oferta" },
+        { sede: "Cordoba", course: "Programacion CNC", date: "08/07/2026", schedule: "Miercoles 20:00", code: "2026-07-08-MI-20:00-22:00-P-A-PROCNC", capacity: 14, enrolled: 5, status: "En Oferta" },
+        { sede: "Cordoba", course: "Soldadura", date: "06/07/2026", schedule: "Lunes 19:00", code: "2026-07-06-LU-19:00-21:30-P-A-SOLDAD", capacity: 12, enrolled: 10, status: "Ultimos Lugares" },
+        { sede: "Cordoba", course: "Soldadura", date: "06/08/2026", schedule: "Jueves 19:00", code: "2026-08-06-JU-19:00-21:30-P-A-SOLDAD", capacity: 12, enrolled: 0, status: "En Oferta" },
+        { sede: "Cristo Obrero", course: "Armado de muebles", date: "08/08/2026", schedule: "Sabado 11:30", code: "2026-08-08-SA-11:30-13:30-P-A-MUEBLE", capacity: 16, enrolled: 0, status: "En Oferta" },
+        { sede: "Cristo Obrero", course: "Electricidad Domiciliaria", date: "04/07/2026", schedule: "Sabado 09:00", code: "2026-07-04-SA-09:00-11:00-P-A-IEDOMI", capacity: 15, enrolled: 19, status: "En Oferta" },
+        { sede: "Cristo Obrero", course: "Electricidad habilitacion Cat III", date: "08/08/2026", schedule: "Sabado 11:00", code: "2026-08-08-SA-11:00-14:00-P-A-EHCAT3", capacity: 20, enrolled: 2, status: "En Oferta" },
+        { sede: "Cristo Obrero", course: "Mecanica de motos", date: "25/07/2026", schedule: "Sabado 09:00", code: "2026-07-25-SA-09:00-11:30-P-A-MECMOT", capacity: 16, enrolled: 11, status: "En Oferta" },
+        { sede: "Cristo Obrero", course: "Molderia, Corte y Confeccion", date: "08/08/2026", schedule: "Sabado 09:00", code: "2026-08-08-SA-09:00-11:00-P-A-MOLDER", capacity: 18, enrolled: 7, status: "En Oferta" },
+        { sede: "Cristo Obrero", course: "Plomeria", date: "25/07/2026", schedule: "Sabado 09:00", code: "2026-07-25-SA-09:00-11:00-P-A-PLOMER", capacity: 16, enrolled: 5, status: "En Oferta" },
+        { sede: "Cristo Obrero", course: "Reparacion e instalacion Aire Acondicionado", date: "25/07/2026", schedule: "Sabado 09:00", code: "2026-07-25-SA-09:00-12:00-P-A-AIRACO", capacity: 16, enrolled: 2, status: "En Oferta" },
+        { sede: "Cristo Obrero", course: "Soldadura", date: "18/07/2026", schedule: "Sabado 11:30", code: "2026-07-18-SA-11:30-14:00-P-A-SOLDAD", capacity: 16, enrolled: 7, status: "En Oferta" },
+        { sede: "Remedios de Escalada", course: "Auxiliar de farmacia", date: "16/07/2026", schedule: "Jueves 20:00", code: "2026-07-16-JU-20:00-22:00-P-A-AUXFAR", capacity: 20, enrolled: 9, status: "En Oferta" },
+        { sede: "Remedios de Escalada", course: "Electricidad de motos", date: "16/07/2026", schedule: "Jueves 18:00", code: "2026-07-16-JU-18:00-20:00-P-A-ELEMOT", capacity: 16, enrolled: 4, status: "En Oferta" },
+        { sede: "Remedios de Escalada", course: "Facturacion medica", date: "16/07/2026", schedule: "Jueves 18:00", code: "2026-07-16-JU-18:00-20:00-P-A-FACTME", capacity: 20, enrolled: 5, status: "En Oferta" },
+        { sede: "Remedios de Escalada", course: "Inyeccion de motos", date: "27/08/2026", schedule: "Jueves 20:00", code: "2026-08-27-JU-20:00-22:00-P-A-INYMOT", capacity: 16, enrolled: 2, status: "En Oferta" }
+      ]
+    };
+
+    let isUnlocked = false;
+    let commercialMonthKey = "2026-07";
+
+    function selectedMonth() {
+      const base = monthData.find(month => month.key === state.config.selectedMonth) || monthData[monthData.length - 1];
+      const override = state && state.config && state.config.hubspotTotals ? state.config.hubspotTotals[base.key] : undefined;
+      return { ...base, hubspotTotal: override === undefined ? base.hubspotTotal : Number(override || 0) };
+    }
+
+    function rowsFor(sede) {
+      const month = selectedMonth();
+      const courses = sede === "cba" ? cbaCourses : sede === "vcp" ? vcpCourses : isremCourses;
+      const leads = sede === "cba" ? month.cbaLeads : sede === "vcp" ? month.vcpLeads : (month.isremLeads || []);
+      const sales = sede === "cba" ? month.cbaSales : sede === "vcp" ? month.vcpSales : (month.isremSales || []);
+      const expected = sede === "cba" ? 0.06 : 0.10;
+      return courses.map((course, index) => ({
+        id: `${month.key}_${sede}_${index}`,
+        course,
+        leads: leads[index] || 0,
+        baseSales: sales[index] || 0,
+        target: targets[sede][index] || 5,
+        expected
+      }));
+    }
+
+    function currentData() {
+      return {
+        cba: rowsFor("cba"),
+        vcp: rowsFor("vcp"),
+        isrem: rowsFor("isrem"),
+        online: selectedMonth().online || []
+      };
+    }
+
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const embedded = EMBEDDED_STATE && typeof EMBEDDED_STATE === "object" ? EMBEDDED_STATE : {};
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || JSON.stringify(embedded || {}));
+        const migratedSales = { ...(saved.sales || {}) };
+        for (const key of LEGACY_STORAGE_KEYS) {
+          const legacy = JSON.parse(localStorage.getItem(key) || "{}");
+          const legacySales = legacy.sales || {};
+          for (const [oldId, newId] of Object.entries(LEGACY_JUNE_ID_MAP)) {
+            if (migratedSales[newId] === undefined && legacySales[oldId] !== undefined) {
+              migratedSales[newId] = Number(legacySales[oldId] || 0);
+            }
+          }
+        }
+        const next = {
+          sales: migratedSales,
+          config: { ...baseConfig, ...(saved.config || {}) }
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        return next;
+      } catch {
+        return { sales: {}, config: { ...baseConfig } };
+      }
+    }
+
+    function persist(showMessage = true) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      if (showMessage) toast("Ventas guardadas y dashboard actualizado");
+    }
+
+    function requireUnlocked() {
+      if (isUnlocked) return true;
+      toast("Edicion bloqueada. Usa la clave para desbloquear.");
+      return false;
+    }
+
+    function toast(message) {
+      const el = document.getElementById("toast");
+      el.textContent = message;
+      el.classList.add("show");
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => el.classList.remove("show"), 2200);
+    }
+
+    const fmt = value => Number(value || 0).toLocaleString("es-AR");
+    const pct = value => `${((Number(value) || 0) * 100).toLocaleString("es-AR", { maximumFractionDigits: 1 })}%`;
+    const sum = (rows, key) => rows.reduce((acc, row) => acc + (Number(row[key]) || 0), 0);
+    const rowSales = row => Number(row.baseSales || 0);
+
+    function calcRow(row) {
+      const ventas = rowSales(row);
+      const conv = row.leads ? ventas / row.leads : 0;
+      const cumplimiento = row.target ? ventas / row.target : 0;
+      const faltanVentas = Math.max(0, row.target - ventas);
+      const leadsObjetivo = row.expected ? row.target / row.expected : 0;
+      const leadsFaltantes = Math.max(0, leadsObjetivo - row.leads);
+      const leadsDia = row.leads / Math.max(1, state.config.elapsedDays);
+      const diasRestantes = Math.max(1, state.config.businessDays - state.config.elapsedDays);
+      const leadsDiaNecesarios = leadsFaltantes / diasRestantes;
+      return { ventas, conv, cumplimiento, faltanVentas, leadsFaltantes, leadsDia, leadsDiaNecesarios };
+    }
+
+    function statusFor(row) {
+      const c = calcRow(row);
+      if (!row.leads) return ["empty", "Sin leads"];
+      if (!c.ventas) return ["empty", "Sin venta"];
+      if (c.ventas >= row.target) return ["good", "Cumplido"];
+      if (c.ventas >= row.target * 0.8) return ["mid", "Parcial"];
+      return ["bad", "Debajo"];
+    }
+
+    function totals(rows) {
+      const leads = sum(rows, "leads");
+      const ventas = rows.reduce((acc, row) => acc + rowSales(row), 0);
+      const target = sum(rows, "target");
+      return {
+        leads,
+        ventas,
+        target,
+        conv: leads ? ventas / leads : 0,
+        cumplimiento: target ? ventas / target : 0
+      };
+    }
+
+    function renderKpis() {
+      const data = currentData();
+      const month = selectedMonth();
+      const cba = totals(data.cba);
+      const vcp = totals(data.vcp);
+      const isrem = totals(data.isrem);
+      const online = sum(data.online, "leads");
+      const mapped = cba.leads + vcp.leads + isrem.leads;
+      const totalVentas = cba.ventas + vcp.ventas + isrem.ventas;
+      const totalTarget = cba.target + vcp.target + isrem.target;
+      const cards = [
+        ["Leads CBA", cba.leads, `Ventas ${fmt(cba.ventas)} - Conv ${pct(cba.conv)}`],
+        ["Leads VCP", vcp.leads, `Ventas ${fmt(vcp.ventas)} - Conv ${pct(vcp.conv)}`],
+        ["Leads ISREM", isrem.leads, `Ventas ${fmt(isrem.ventas)} - Conv ${pct(isrem.conv)}`],
+        ["Ventas totales", totalVentas, `Objetivo ${fmt(totalTarget)} - Cumpl ${pct(totalTarget ? totalVentas / totalTarget : 0)}`],
+        ["Online/no mapeado", online, "Separado de sedes"],
+        ["Total del mes", month.hubspotTotal, `${fmt(mapped)} sabana + ${fmt(online)} separado`]
+      ];
+      document.getElementById("kpis").innerHTML = cards.map(([label, value, note]) => `
+        <article class="card metric">
+          <div class="label">${label}</div>
+          <div class="value">${fmt(value)}</div>
+          <div class="note">${note}</div>
+        </article>
+      `).join("");
+    }
+
+    function renderSummary() {
+      const data = currentData();
+      const month = selectedMonth();
+      const cba = totals(data.cba);
+      const vcp = totals(data.vcp);
+      const isrem = totals(data.isrem);
+      const online = sum(data.online, "leads");
+      const mapped = cba.leads + vcp.leads + isrem.leads;
+      const control = mapped + online;
+      const rows = [
+        ["CBA", cba.leads, cba.ventas, pct(cba.conv), cba.target, pct(cba.cumplimiento)],
+        ["VCP", vcp.leads, vcp.ventas, pct(vcp.conv), vcp.target, pct(vcp.cumplimiento)],
+        ["ISREM", isrem.leads, isrem.ventas, pct(isrem.conv), isrem.target, pct(isrem.cumplimiento)],
+        ["Online / no mapeado", online, "-", "-", "-", "-"],
+        ["Total conciliado", control, cba.ventas + vcp.ventas + isrem.ventas, "-", cba.target + vcp.target + isrem.target, "-"]
+      ];
+      document.getElementById("summaryTable").innerHTML = `
+        <thead><tr><th>Grupo</th><th class="num">Leads</th><th class="num">Ventas</th><th class="num">Conv%</th><th class="num">Obj. ventas</th><th class="num">Cumpl%</th></tr></thead>
+        <tbody>${rows.map((row, idx) => `
+          <tr class="${idx === rows.length - 1 ? "total" : ""}">
+            <td>${row[0]}</td><td class="num">${fmt(row[1])}</td><td class="num">${typeof row[2] === "number" ? fmt(row[2]) : row[2]}</td>
+            <td class="num">${row[3]}</td><td class="num">${typeof row[4] === "number" ? fmt(row[4]) : row[4]}</td><td class="num">${row[5]}</td>
+          </tr>`).join("")}</tbody>`;
+      const pill = document.getElementById("controlPill");
+      pill.textContent = control === Number(month.hubspotTotal) ? "Conciliado" : `Diferencia ${fmt(control - month.hubspotTotal)}`;
+    }
+
+    function renderCourseTable(tableId, rows) {
+      const total = totals(rows);
+      document.getElementById(tableId).innerHTML = `
+        <thead>
+          <tr>
+            <th>Curso</th><th class="num">Leads</th><th class="num">Ventas</th><th class="num">Conv%</th>
+            <th class="num">Objetivo</th><th class="num">Cumpl%</th><th class="num">Faltan ventas</th>
+            <th class="num">Leads/dia</th><th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map(row => {
+            const c = calcRow(row);
+            const [cls, label] = statusFor(row);
+            return `<tr>
+              <td>${row.course}</td>
+              <td class="num">${fmt(row.leads)}</td>
+              <td class="num"><span class="readonly-sales">${fmt(rowSales(row))}</span></td>
+              <td class="num">${pct(c.conv)}</td>
+              <td class="num">${fmt(row.target)}</td>
+              <td class="num">${pct(c.cumplimiento)}</td>
+              <td class="num">${fmt(c.faltanVentas)}</td>
+              <td class="num">${c.leadsDia.toLocaleString("es-AR", { maximumFractionDigits: 1 })}</td>
+              <td><span class="status ${cls}">${label}</span></td>
+            </tr>`;
+          }).join("")}
+          <tr class="total">
+            <td>Total</td><td class="num">${fmt(total.leads)}</td><td class="num">${fmt(total.ventas)}</td>
+            <td class="num">${pct(total.conv)}</td><td class="num">${fmt(total.target)}</td>
+            <td class="num">${pct(total.cumplimiento)}</td><td class="num">${fmt(Math.max(0, total.target - total.ventas))}</td>
+            <td class="num">${(total.leads / Math.max(1, state.config.elapsedDays)).toLocaleString("es-AR", { maximumFractionDigits: 1 })}</td><td></td>
+          </tr>
+        </tbody>`;
+    }
+
+    function renderOnline() {
+      const data = currentData();
+      const month = selectedMonth();
+      const total = sum(data.online, "leads");
+      if (!data.online.length) {
+        document.getElementById("onlineTable").innerHTML = `
+          <tbody><tr><td class="hint">Este mes no tiene hoja online/no mapeado separada en el Excel original. La conciliacion se toma como CBA + VCP.</td></tr></tbody>`;
+        document.getElementById("onlineBars").innerHTML = `<div class="hint">Sin datos online separados para ${month.label}.</div>`;
+        return;
+      }
+      document.getElementById("onlineTable").innerHTML = `
+        <thead><tr><th>Conversion reciente</th><th>Curso</th><th class="num">Leads</th><th class="num">% separado</th><th class="num">% HubSpot</th></tr></thead>
+        <tbody>${data.online.map(row => `
+          <tr><td>${row.conversion}</td><td>${row.course}</td><td class="num">${fmt(row.leads)}</td><td class="num">${pct(total ? row.leads / total : 0)}</td><td class="num">${pct(row.leads / month.hubspotTotal)}</td></tr>
+        `).join("")}
+        <tr class="total"><td>Total online/no mapeado</td><td></td><td class="num">${fmt(total)}</td><td class="num">100%</td><td class="num">${pct(total / month.hubspotTotal)}</td></tr></tbody>`;
+      renderBars("onlineBars", data.online.map(row => ({ label: row.course, value: row.leads })));
+    }
+
+    function renderBars(id, rows) {
+      const max = Math.max(1, ...rows.map(row => Number(row.value) || 0));
+      document.getElementById(id).innerHTML = rows.map(row => `
+        <div class="bar-row">
+          <div class="bar-label" title="${row.label}">${row.label}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.max(2, (row.value / max) * 100)}%"></div></div>
+          <div class="num">${fmt(row.value)}</div>
+        </div>
+      `).join("");
+    }
+
+    function commercialDateParts(value) {
+      const raw = String(value || "").trim();
+      let match = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if (match) return { day: match[1].padStart(2, "0"), month: match[2].padStart(2, "0"), year: match[3] };
+      match = raw.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+      if (match) return { day: match[3].padStart(2, "0"), month: match[2].padStart(2, "0"), year: match[1] };
+      return null;
+    }
+
+    function formatCommercialDate(value) {
+      const parts = commercialDateParts(value);
+      return parts ? `${parts.day}/${parts.month}/${parts.year}` : value;
+    }
+
+    function commercialCourseMonth(row) {
+      const parts = commercialDateParts(row.date);
+      return parts ? `${parts.year}-${parts.month}` : "sin_mes";
+    }
+
+    function commercialMonthLabel(key) {
+      const [year, month] = key.split("-");
+      const labels = {
+        "01": "Enero", "02": "Febrero", "03": "Marzo", "04": "Abril", "05": "Mayo", "06": "Junio",
+        "07": "Julio", "08": "Agosto", "09": "Septiembre", "10": "Octubre", "11": "Noviembre", "12": "Diciembre"
+      };
+      return `${labels[month] || month} ${year}`;
+    }
+
+    function parseCommercialDate(row) {
+      const parts = commercialDateParts(row.date);
+      if (!parts) return null;
+      return new Date(Number(parts.year), Number(parts.month) - 1, Number(parts.day));
+    }
+
+    function isCommercialClosed(row) {
+      if (row.closed) return true;
+      const status = String(row.status || "").toLowerCase();
+      if (status.includes("cerrado") || status.includes("completo")) return true;
+      const start = parseCommercialDate(row);
+      if (!start) return false;
+      const snapshot = new Date(`${COMMERCIAL_SNAPSHOT_DATE}T00:00:00`);
+      return start < snapshot;
+    }
+
+    function sellableRemaining(row) {
+      if (isCommercialClosed(row)) return 0;
+      return Math.max(0, Number(row.capacity || 0) - Number(row.enrolled || 0));
+    }
+
+    function commercialMonthOptions() {
+      return [...new Set(commercialData.courses.map(commercialCourseMonth))]
+        .filter(key => key !== "sin_mes")
+        .sort()
+        .map(key => ({ key, label: commercialMonthLabel(key) }));
+    }
+
+    function commercialFilteredCourses() {
+      return commercialData.courses.filter(row => commercialCourseMonth(row) === commercialMonthKey);
+    }
+
+    function commercialTotals(courses = commercialFilteredCourses()) {
+      const capacity = sum(courses, "capacity");
+      const enrolled = sum(courses, "enrolled");
+      const remaining = courses.reduce((acc, row) => acc + sellableRemaining(row), 0);
+      const overbooked = courses.filter(row => Number(row.enrolled || 0) > Number(row.capacity || 0)).length;
+      const full = courses.filter(row => Number(row.enrolled || 0) >= Number(row.capacity || 0)).length;
+      const closed = courses.filter(isCommercialClosed).length;
+      return { capacity, enrolled, remaining, overbooked, full, closed, occupancy: capacity ? enrolled / capacity : 0 };
+    }
+
+    function commercialStatus(row) {
+      const capacity = Number(row.capacity || 0);
+      const enrolled = Number(row.enrolled || 0);
+      const ratio = capacity ? enrolled / capacity : 0;
+      if (isCommercialClosed(row)) return ["empty", "Cerrado"];
+      if (enrolled > capacity) return ["bad", "Sobrecupo"];
+      if (enrolled === capacity || row.status.toLowerCase().includes("completo")) return ["good", "Completo"];
+      if (ratio >= 0.8 || row.status.toLowerCase().includes("ultimo")) return ["mid", "Ultimos lugares"];
+      if (!enrolled) return ["empty", "Sin inscriptos"];
+      return ["good", "En venta"];
+    }
+
+    function renderCommercialKpis() {
+      const totals = commercialTotals();
+      const monthLabel = commercialMonthLabel(commercialMonthKey);
+      const current = commercialData.currentMonth;
+      const filteredCourses = commercialFilteredCourses();
+      const cards = [
+        ["Objetivo ventas", totals.remaining, `Cupos por llenar en ${monthLabel}`, "accent-blue"],
+        ["Ventas reales julio", current.sales, `${fmt(current.enrollments)} cupos ocupados MTD`, "accent-teal"],
+        ["Becas julio", current.scholarships, "Ocupan lugar, no son ventas", "accent-amber"],
+        ["Cupos ocupados MTD", current.enrollments, "Ventas + becas, incluye historicos", "accent-green"],
+        ["Cursos abiertos", filteredCourses.filter(row => sellableRemaining(row) > 0).length, "Todavia tienen cupos vendibles", totals.overbooked ? "accent-red" : "accent-green"],
+        ["Cerrados/iniciados", totals.closed, "Cuentan ocupacion, no objetivo", "accent-blue"]
+      ];
+      document.getElementById("commercialKpis").innerHTML = cards.map(([label, value, note, cls]) => `
+        <article class="card metric ${cls}">
+          <div class="label">${label}</div>
+          <div class="value">${fmt(value)}</div>
+          <div class="note">${note}</div>
+        </article>
+      `).join("");
+    }
+
+    function renderCommercialSedes() {
+      const bySede = new Map();
+      commercialFilteredCourses().forEach(row => {
+        const current = bySede.get(row.sede) || { sede: row.sede, courses: 0, capacity: 0, enrolled: 0, remaining: 0, closed: 0 };
+        current.courses += 1;
+        current.capacity += Number(row.capacity || 0);
+        current.enrolled += Number(row.enrolled || 0);
+        current.remaining += sellableRemaining(row);
+        if (isCommercialClosed(row)) current.closed += 1;
+        bySede.set(row.sede, current);
+      });
+      const rows = [...bySede.values()];
+      document.getElementById("commercialSedeTable").innerHTML = `
+        <thead><tr><th>Sede</th><th class="num">Cursos</th><th class="num">Cupos</th><th class="num">Ocupados</th><th class="num">Objetivo ventas</th><th class="num">Cerrados</th><th class="num">Ocupacion</th></tr></thead>
+        <tbody>${rows.map(row => `
+          <tr>
+            <td>${row.sede}</td>
+            <td class="num">${fmt(row.courses)}</td>
+            <td class="num">${fmt(row.capacity)}</td>
+            <td class="num">${fmt(row.enrolled)}</td>
+            <td class="num">${fmt(row.remaining)}</td>
+            <td class="num">${fmt(row.closed)}</td>
+            <td class="num">${pct(row.capacity ? row.enrolled / row.capacity : 0)}</td>
+          </tr>
+        `).join("")}</tbody>`;
+    }
+
+    function renderCommercialCourses() {
+      const rows = [...commercialFilteredCourses()].sort((a, b) => {
+        const remA = sellableRemaining(a);
+        const remB = sellableRemaining(b);
+        const alertA = isCommercialClosed(a) ? 999 : a.enrolled >= a.capacity ? -100 : remA;
+        const alertB = isCommercialClosed(b) ? 999 : b.enrolled >= b.capacity ? -100 : remB;
+        return alertA - alertB;
+      });
+      document.getElementById("commercialCourseTable").innerHTML = `
+        <thead>
+          <tr><th>Curso</th><th>Sede</th><th>Inicio</th><th>Horario</th><th class="num">Cupo</th><th class="num">Inscriptos</th><th class="num">Objetivo ventas</th><th>Ocupacion</th><th>Estado</th></tr>
+        </thead>
+        <tbody>${rows.map(row => {
+          const remaining = sellableRemaining(row);
+          const ratio = row.capacity ? row.enrolled / row.capacity : 0;
+          const [cls, label] = commercialStatus(row);
+          const fillClass = ratio >= 1 ? "hot" : ratio >= 0.75 ? "mid" : "open";
+          return `<tr>
+            <td><div class="course-name">${row.course}</div><div class="course-meta">${row.code}</div></td>
+            <td>${row.sede}</td>
+            <td>${formatCommercialDate(row.date)}</td>
+            <td>${row.schedule}</td>
+            <td class="num">${fmt(row.capacity)}</td>
+            <td class="num">${fmt(row.enrolled)}</td>
+            <td class="num">${fmt(remaining)}</td>
+            <td class="progress-cell"><div class="progress-wrap"><div class="progress-track"><div class="progress-fill ${fillClass}" style="width:${Math.min(100, Math.max(2, ratio * 100))}%"></div></div><span class="num">${pct(ratio)}</span></div></td>
+            <td><span class="status ${cls}">${label}</span></td>
+          </tr>`;
+        }).join("")}</tbody>`;
+    }
+
+    function renderCommercialMonthSelect() {
+      const select = document.getElementById("commercialMonthSelect");
+      const options = commercialMonthOptions();
+      if (!options.some(option => option.key === commercialMonthKey) && options.length) {
+        commercialMonthKey = options[0].key;
+      }
+      select.innerHTML = options.map(option => `<option value="${option.key}">${option.label}</option>`).join("");
+      select.value = commercialMonthKey;
+    }
+
+    function renderCommercialMonthTable() {
+      const rows = commercialMonthOptions().map(option => {
+        const courses = commercialData.courses.filter(row => commercialCourseMonth(row) === option.key);
+        return { ...option, ...commercialTotals(courses), courses: courses.length };
+      });
+      document.getElementById("commercialMonthTable").innerHTML = `
+        <thead><tr><th>Mes inicio</th><th class="num">Cursos</th><th class="num">Cupos</th><th class="num">Ocupados</th><th class="num">Objetivo ventas</th><th class="num">Ocupacion</th></tr></thead>
+        <tbody>${rows.map(row => `
+          <tr class="${row.key === commercialMonthKey ? "total" : ""}">
+            <td>${row.label}</td>
+            <td class="num">${fmt(row.courses)}</td>
+            <td class="num">${fmt(row.capacity)}</td>
+            <td class="num">${fmt(row.enrolled)}</td>
+            <td class="num">${fmt(row.remaining)}</td>
+            <td class="num">${pct(row.occupancy)}</td>
+          </tr>
+        `).join("")}</tbody>`;
+    }
+
+    function renderCommercial() {
+      renderCommercialMonthSelect();
+      renderCommercialKpis();
+      renderCommercialSedes();
+      renderCommercialCourses();
+      renderBars("commercialAdvisorBars", [...commercialData.currentMonth.byAdvisor]
+        .sort((a, b) => b.sales - a.sales || b.occupied - a.occupied)
+        .map(row => ({
+          label: row.scholarships ? `${row.label} (${row.scholarships} becas)` : row.label,
+          value: row.sales
+        })));
+      const monthObjectiveRows = commercialMonthOptions().map(option => {
+        const courses = commercialData.courses.filter(row => commercialCourseMonth(row) === option.key);
+        return { label: option.label, value: commercialTotals(courses).remaining };
+      });
+      renderBars("commercialMonthBars", monthObjectiveRows);
+      renderCommercialMonthTable();
+    }
+
+    async function refreshHubSpotReportData() {
+      if (!HUBSPOT_REPORT_FEED_URL) {
+        return false;
+      }
+      const fresh = await loadFeed(HUBSPOT_REPORT_FEED_URL);
+      if (Array.isArray(fresh.monthData) && fresh.monthData.length) {
+        monthData.splice(0, monthData.length, ...fresh.monthData);
+      } else if (fresh.currentMonth) {
+        const index = monthData.findIndex(month => month.key === fresh.currentMonth.key);
+        if (index >= 0) monthData[index] = { ...monthData[index], ...fresh.currentMonth };
+      }
+      return true;
+    }
+
+    function loadFeedJsonp(url) {
+      return new Promise((resolve, reject) => {
+        const callbackName = `brunerFeed_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const script = document.createElement("script");
+        const sep = url.includes("?") ? "&" : "?";
+        const cleanup = () => {
+          delete window[callbackName];
+          script.remove();
+        };
+        window[callbackName] = data => {
+          cleanup();
+          resolve(data);
+        };
+        script.onerror = () => {
+          cleanup();
+          reject(new Error("No se pudo cargar el feed"));
+        };
+        script.src = `${url}${sep}callback=${encodeURIComponent(callbackName)}&t=${Date.now()}`;
+        document.head.appendChild(script);
+      });
+    }
+
+    async function loadFeed(url) {
+      if (url.includes("script.google.com")) {
+        return loadFeedJsonp(url);
+      }
+      try {
+        const response = await fetch(`${url}${url.includes("?") ? "&" : "?"}t=${Date.now()}`, { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return await response.json();
+      } catch {
+        return loadFeedJsonp(url);
+      }
+    }
+
+    async function refreshCommercialData() {
+      const button = document.getElementById("commercialRefreshBtn");
+      if (!UPDATE_FEED_URL && !COMMERCIAL_FEED_URL && !HUBSPOT_REPORT_FEED_URL) {
+        toast("Falta conectar el enlace seguro de actualizacion");
+        return;
+      }
+      button.disabled = true;
+      button.textContent = "Actualizando";
+      let updatedSheets = false;
+      let updatedHubSpot = false;
+      try {
+        if (COMMERCIAL_FEED_URL) {
+          const fresh = await loadFeed(COMMERCIAL_FEED_URL);
+          if (fresh.commercialData) Object.assign(commercialData, fresh.commercialData);
+          else Object.assign(commercialData, fresh);
+          if (Array.isArray(fresh.monthData) && fresh.monthData.length) {
+            monthData.splice(0, monthData.length, ...fresh.monthData);
+            document.getElementById("monthSelect").innerHTML = monthData.map(month => `<option value="${month.key}">${month.label}</option>`).join("");
+          } else if (fresh.currentMonth) {
+            const index = monthData.findIndex(month => month.key === fresh.currentMonth.key);
+            if (index >= 0) monthData[index] = { ...monthData[index], ...fresh.currentMonth };
+          }
+          updatedSheets = true;
+        }
+        updatedHubSpot = await refreshHubSpotReportData();
+        renderAll();
+        toast(`Actualizado: ${updatedSheets ? "Sheets" : ""}${updatedSheets && updatedHubSpot ? " + " : ""}${updatedHubSpot ? "HubSpot" : ""}`);
+      } catch (error) {
+        console.error("No pude completar la actualizacion", error);
+        toast(`No pude completar la actualizacion: ${error.message || error}`);
+      } finally {
+        button.disabled = false;
+        button.textContent = "Actualizar todo";
+      }
+    }
+
+    function renderAll() {
+      const data = currentData();
+      const month = selectedMonth();
+      document.querySelector("h1").textContent = `Reporteria ${month.label} | Instituto Bruner`;
+      renderKpis();
+      renderSummary();
+      renderCourseTable("cbaTable", data.cba);
+      renderCourseTable("vcpTable", data.vcp);
+      renderCourseTable("isremTable", data.isrem);
+      renderOnline();
+      renderCommercial();
+      const cba = totals(data.cba);
+      const vcp = totals(data.vcp);
+      const isrem = totals(data.isrem);
+      renderBars("groupBars", [
+        { label: "CBA", value: cba.leads },
+        { label: "VCP", value: vcp.leads },
+        { label: "ISREM", value: isrem.leads },
+        { label: "Online/no mapeado", value: sum(data.online, "leads") }
+      ]);
+      renderBars("cbaBars", [...data.cba].sort((a, b) => b.leads - a.leads).slice(0, 8).map(row => ({ label: row.course, value: row.leads })));
+      renderBars("vcpBars", [...data.vcp].sort((a, b) => b.leads - a.leads).slice(0, 8).map(row => ({ label: row.course, value: row.leads })));
+      renderBars("isremBars", [...data.isrem].sort((a, b) => b.leads - a.leads).slice(0, 8).map(row => ({ label: row.course, value: row.leads })));
+      bindSalesInputs();
+      syncConfigInputs();
+      updateLockUi();
+    }
+
+    function bindSalesInputs() {
+      document.querySelectorAll("[data-sales]").forEach(input => {
+        input.addEventListener("input", event => {
+          if (!requireUnlocked()) return;
+          const id = event.target.dataset.sales;
+          const value = Math.max(0, Number(event.target.value || 0));
+          state.sales[id] = value;
+          persist(false);
+          renderAll();
+        });
+      });
+    }
+
+    function syncConfigInputs() {
+      document.getElementById("monthSelect").value = state.config.selectedMonth;
+      document.getElementById("elapsedDays").value = state.config.elapsedDays;
+      document.getElementById("businessDays").value = state.config.businessDays;
+      document.getElementById("hubspotTotal").value = selectedMonth().hubspotTotal;
+    }
+
+    function updateLockUi() {
+      const status = document.getElementById("editStatus");
+      status.textContent = isUnlocked ? "Edicion habilitada" : "Edicion bloqueada";
+      status.className = `pill ${isUnlocked ? "unlocked" : "locked"}`;
+      document.getElementById("unlockBtn").textContent = isUnlocked ? "Bloquear" : "Desbloquear";
+      document.getElementById("saveBtn").disabled = !isUnlocked;
+      document.getElementById("resetBtn").disabled = !isUnlocked;
+      document.getElementById("importInput").disabled = !isUnlocked;
+      document.getElementById("importLabel").classList.toggle("locked", !isUnlocked);
+      document.getElementById("elapsedDays").disabled = !isUnlocked;
+      document.getElementById("businessDays").disabled = !isUnlocked;
+      document.getElementById("hubspotTotal").disabled = !isUnlocked;
+    }
+
+    function download(filename, text, type = "application/json") {
+      const blob = new Blob([text], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportCsv() {
+      const data = currentData();
+      const month = selectedMonth();
+      const rows = [["Sede", "Curso", "Leads", "Ventas", "Conversion", "Objetivo ventas", "Cumplimiento"]];
+      for (const [sede, list] of [["CBA", data.cba], ["VCP", data.vcp], ["ISREM", data.isrem]]) {
+        list.forEach(row => {
+          const c = calcRow(row);
+          rows.push([sede, row.course, row.leads, c.ventas, (c.conv * 100).toFixed(1) + "%", row.target, (c.cumplimiento * 100).toFixed(1) + "%"]);
+        });
+      }
+      const csv = rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")).join("\n");
+      download(`reporteria_${month.key}_ventas.csv`, csv, "text/csv;charset=utf-8");
+    }
+
+    function exportHtmlWithSales() {
+      persist(false);
+      const snapshot = {
+        sales: state.sales || {},
+        config: state.config || {}
+      };
+      let html = `<!doctype html>\n${document.documentElement.outerHTML}`;
+      html = html.replace(
+        /const EMBEDDED_STATE = .*?;/,
+        `const EMBEDDED_STATE = ${JSON.stringify(snapshot)};`
+      );
+      download(`reporteria_${selectedMonth().key}_con_ventas.html`, html, "text/html;charset=utf-8");
+      toast("HTML con ventas descargado");
+    }
+
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
+        document.querySelectorAll(".view").forEach(el => el.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById(tab.dataset.view).classList.add("active");
+      });
+    });
+
+    document.getElementById("monthSelect").innerHTML = monthData.map(month => `<option value="${month.key}">${month.label}</option>`).join("");
+    document.getElementById("monthSelect").addEventListener("change", event => {
+      state.config.selectedMonth = event.target.value;
+      persist(false);
+      renderAll();
+      toast(`Mostrando ${selectedMonth().label}`);
+    });
+
+    document.getElementById("commercialMonthSelect").addEventListener("change", event => {
+      commercialMonthKey = event.target.value;
+      renderAll();
+      toast(`Objetivo comercial ${commercialMonthLabel(commercialMonthKey)}`);
+    });
+    document.getElementById("commercialRefreshBtn").addEventListener("click", refreshCommercialData);
+
+    document.getElementById("unlockBtn").addEventListener("click", () => {
+      if (isUnlocked) {
+        isUnlocked = false;
+        renderAll();
+        toast("Edicion bloqueada");
+        return;
+      }
+      const pass = prompt("Clave para editar");
+      if (pass === EDIT_PASSWORD) {
+        isUnlocked = true;
+        renderAll();
+        toast("Edicion habilitada");
+      } else if (pass !== null) {
+        toast("Clave incorrecta");
+      }
+    });
+
+    document.getElementById("saveBtn").addEventListener("click", () => {
+      if (!requireUnlocked()) return;
+      persist(true);
+    });
+    document.getElementById("exportBtn").addEventListener("click", () => {
+      download("backup_ventas_reporteria_multimes.json", JSON.stringify(state, null, 2));
+    });
+    document.getElementById("csvBtn").addEventListener("click", exportCsv);
+    document.getElementById("htmlBtn").addEventListener("click", exportHtmlWithSales);
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      if (!requireUnlocked()) return;
+      if (!confirm("Seguro que queres borrar las ventas guardadas en este navegador?")) return;
+      state.sales = {};
+      persist(false);
+      renderAll();
+      toast("Ventas limpiadas");
+    });
+
+    document.getElementById("importInput").addEventListener("change", event => {
+      if (!requireUnlocked()) return;
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const imported = JSON.parse(reader.result);
+          state.sales = imported.sales || imported || {};
+          state.config = { ...baseConfig, ...(imported.config || {}) };
+          persist(false);
+          renderAll();
+          toast("Backup importado");
+        } catch {
+          toast("No pude importar ese archivo");
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = "";
+    });
+
+    ["elapsedDays", "businessDays"].forEach(id => {
+      document.getElementById(id).addEventListener("input", event => {
+        if (!requireUnlocked()) return;
+        state.config[id] = Math.max(1, Number(event.target.value || 1));
+        persist(false);
+        renderAll();
+      });
+    });
+
+    document.getElementById("hubspotTotal").addEventListener("input", event => {
+      if (!requireUnlocked()) return;
+      state.config.hubspotTotals = state.config.hubspotTotals || {};
+      state.config.hubspotTotals[state.config.selectedMonth] = Math.max(0, Number(event.target.value || 0));
+      persist(false);
+      renderAll();
+    });
+
+    renderAll();
+  </script>
+</body>
+</html>
