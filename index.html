@@ -1334,9 +1334,6 @@
     }
 
     async function loadFeed(url) {
-      if (url.includes("script.google.com")) {
-        return loadFeedJsonp(url);
-      }
       try {
         const response = await fetch(`${url}${url.includes("?") ? "&" : "?"}t=${Date.now()}`, { cache: "no-store" });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
