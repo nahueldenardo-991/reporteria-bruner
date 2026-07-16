@@ -738,14 +738,14 @@
 
     const baseConfig = {
       hubspotTotal: 1868,
-      elapsedDays: 30,
-      businessDays: 30,
+      elapsedDays: 16,
+      businessDays: 31,
       selectedMonth: "jun_2026"
     };
     const UPDATE_FEED_URL = "https://script.google.com/macros/s/AKfycbyhKiGC0ZzG2KpOc-TRoOih2qXUTsG2ckWi98Blyc1j0Fma_R0ec5QcAoysElUBvCo/exec";
     const COMMERCIAL_FEED_URL = UPDATE_FEED_URL;
     const HUBSPOT_REPORT_FEED_URL = "";
-    const COMMERCIAL_SNAPSHOT_DATE = "2026-07-08";
+    const COMMERCIAL_SNAPSHOT_DATE = "2026-07-16";
 
     const cbaCourses = [
       "Electricista Inicial", "Cerrajeria", "Muebles Armado y Diseno", "Soldadura y Herreria",
@@ -784,69 +784,557 @@
     ];
 
     const commercialData = {
-      updatedAt: "08/07/2026",
-      source: "Inscripcion Bruner Instituto (Respuestas)",
-      currentMonth: {
-        label: "Julio 2026 MTD",
-        through: "07/07/2026",
-        enrollments: 25,
-        sales: 14,
-        scholarships: 11,
-        bySede: [
-          { label: "Cordoba", enrollments: 14, sales: 6, scholarships: 8 },
-          { label: "Cristo Obrero", enrollments: 8, sales: 5, scholarships: 3 },
-          { label: "Remedios de Escalada", enrollments: 3, sales: 3, scholarships: 0 }
-        ],
-        byAdvisor: [
-          { label: "Meli", sales: 4, scholarships: 0, occupied: 4 },
-          { label: "Juli", sales: 4, scholarships: 0, occupied: 4 },
-          { label: "Claudia", sales: 3, scholarships: 0, occupied: 3 },
-          { label: "Susi", sales: 1, scholarships: 0, occupied: 1 },
-          { label: "Lore", sales: 1, scholarships: 0, occupied: 1 },
-          { label: "Mica", sales: 1, scholarships: 0, occupied: 1 },
-          { label: "Mati P", sales: 0, scholarships: 8, occupied: 8 },
-          { label: "Sol", sales: 0, scholarships: 3, occupied: 3 }
-        ]
+      "updatedAt": "16/07/2026 19:48",
+      "source": "Inscripcion Bruner Instituto (Respuestas) + Base Historica",
+      "currentMonth": {
+            "label": "Julio 2026",
+            "through": "16/07/2026",
+            "enrollments": 55,
+            "sales": 42,
+            "scholarships": 13,
+            "bySede": [
+                  {
+                        "label": "Remedios de Escalada",
+                        "enrollments": 9,
+                        "sales": 9,
+                        "scholarships": 0,
+                        "occupied": 9
+                  },
+                  {
+                        "label": "Cristo Obrero",
+                        "enrollments": 18,
+                        "sales": 15,
+                        "scholarships": 3,
+                        "occupied": 18
+                  },
+                  {
+                        "label": "Córdoba",
+                        "enrollments": 28,
+                        "sales": 18,
+                        "scholarships": 10,
+                        "occupied": 28
+                  }
+            ],
+            "byAdvisor": [
+                  {
+                        "label": "Meli",
+                        "enrollments": 11,
+                        "sales": 10,
+                        "scholarships": 1,
+                        "occupied": 11
+                  },
+                  {
+                        "label": "Claudia",
+                        "enrollments": 10,
+                        "sales": 10,
+                        "scholarships": 0,
+                        "occupied": 10
+                  },
+                  {
+                        "label": "Susi",
+                        "enrollments": 8,
+                        "sales": 8,
+                        "scholarships": 0,
+                        "occupied": 8
+                  },
+                  {
+                        "label": "Juli",
+                        "enrollments": 7,
+                        "sales": 7,
+                        "scholarships": 0,
+                        "occupied": 7
+                  },
+                  {
+                        "label": "Sol",
+                        "enrollments": 5,
+                        "sales": 2,
+                        "scholarships": 3,
+                        "occupied": 5
+                  },
+                  {
+                        "label": "Lore",
+                        "enrollments": 2,
+                        "sales": 2,
+                        "scholarships": 0,
+                        "occupied": 2
+                  },
+                  {
+                        "label": "Mica",
+                        "enrollments": 2,
+                        "sales": 2,
+                        "scholarships": 0,
+                        "occupied": 2
+                  },
+                  {
+                        "label": "Vale",
+                        "enrollments": 1,
+                        "sales": 1,
+                        "scholarships": 0,
+                        "occupied": 1
+                  },
+                  {
+                        "label": "Mati P",
+                        "enrollments": 9,
+                        "sales": 0,
+                        "scholarships": 9,
+                        "occupied": 9
+                  }
+            ]
       },
-      monthly: [
-        { label: "Mar 2026", enrollments: 3 },
-        { label: "Abr 2026", enrollments: 7 },
-        { label: "May 2026", enrollments: 33 },
-        { label: "Jun 2026", enrollments: 74 },
-        { label: "Jul 2026", enrollments: 25 }
+      "monthly": [
+            {
+                  "key": "2024-05",
+                  "label": "Mayo 2024",
+                  "enrollments": 9
+            },
+            {
+                  "key": "2024-06",
+                  "label": "Junio 2024",
+                  "enrollments": 19
+            },
+            {
+                  "key": "2024-07",
+                  "label": "Julio 2024",
+                  "enrollments": 40
+            },
+            {
+                  "key": "2024-08",
+                  "label": "Agosto 2024",
+                  "enrollments": 38
+            },
+            {
+                  "key": "2024-09",
+                  "label": "Septiembre 2024",
+                  "enrollments": 17
+            },
+            {
+                  "key": "2024-10",
+                  "label": "Octubre 2024",
+                  "enrollments": 23
+            },
+            {
+                  "key": "2024-11",
+                  "label": "Noviembre 2024",
+                  "enrollments": 2
+            },
+            {
+                  "key": "2025-01",
+                  "label": "Enero 2025",
+                  "enrollments": 15
+            },
+            {
+                  "key": "2025-02",
+                  "label": "Febrero 2025",
+                  "enrollments": 41
+            },
+            {
+                  "key": "2025-03",
+                  "label": "Marzo 2025",
+                  "enrollments": 60
+            },
+            {
+                  "key": "2025-04",
+                  "label": "Abril 2025",
+                  "enrollments": 68
+            },
+            {
+                  "key": "2025-05",
+                  "label": "Mayo 2025",
+                  "enrollments": 36
+            },
+            {
+                  "key": "2025-06",
+                  "label": "Junio 2025",
+                  "enrollments": 62
+            },
+            {
+                  "key": "2025-07",
+                  "label": "Julio 2025",
+                  "enrollments": 93
+            },
+            {
+                  "key": "2025-08",
+                  "label": "Agosto 2025",
+                  "enrollments": 79
+            },
+            {
+                  "key": "2025-09",
+                  "label": "Septiembre 2025",
+                  "enrollments": 104
+            },
+            {
+                  "key": "2025-10",
+                  "label": "Octubre 2025",
+                  "enrollments": 64
+            },
+            {
+                  "key": "2025-11",
+                  "label": "Noviembre 2025",
+                  "enrollments": 59
+            },
+            {
+                  "key": "2025-12",
+                  "label": "Diciembre 2025",
+                  "enrollments": 56
+            },
+            {
+                  "key": "2026-01",
+                  "label": "Enero 2026",
+                  "enrollments": 161
+            },
+            {
+                  "key": "2026-02",
+                  "label": "Febrero 2026",
+                  "enrollments": 171
+            },
+            {
+                  "key": "2026-03",
+                  "label": "Marzo 2026",
+                  "enrollments": 132
+            },
+            {
+                  "key": "2026-04",
+                  "label": "Abril 2026",
+                  "enrollments": 103
+            },
+            {
+                  "key": "2026-05",
+                  "label": "Mayo 2026",
+                  "enrollments": 85
+            },
+            {
+                  "key": "2026-06",
+                  "label": "Junio 2026",
+                  "enrollments": 120
+            },
+            {
+                  "key": "2026-07",
+                  "label": "Julio 2026",
+                  "enrollments": 55
+            }
       ],
-      courses: [
-        { sede: "Cordoba", course: "Armado de muebles", date: "04/08/2026", schedule: "Martes 20:00", code: "2026-08-04-MA-20:00-22:00-P-A-MUEBLE", capacity: 12, enrolled: 12, status: "COMPLETO" },
-        { sede: "Cordoba", course: "Armado de muebles", date: "08/09/2026", schedule: "Martes 18:00", code: "2026-09-08-MA-18:00-20:00-P-A-MUEBLE", capacity: 12, enrolled: 0, status: "En Oferta" },
-        { sede: "Cordoba", course: "Auxiliar de farmacia", date: "08/08/2026", schedule: "Sabado 11:00", code: "2026-08-08-SA-11:00-13:00-P-A-AUXFAR", capacity: 20, enrolled: 2, status: "En Oferta" },
-        { sede: "Cordoba", course: "Auxiliar de farmacia", date: "12/08/2026", schedule: "Miercoles 18:00", code: "2026-08-12-MI-18:00-20:00-P-A-AUXFAR", capacity: 20, enrolled: 2, status: "En Oferta" },
-        { sede: "Cordoba", course: "Cerrajeria", date: "07/09/2026", schedule: "Lunes 20:00", code: "2026-09-07-LU-20:00-22:00-P-A-CERRAJ", capacity: 10, enrolled: 0, status: "En Oferta" },
-        { sede: "Cordoba", course: "Electricidad Domiciliaria", date: "04/08/2026", schedule: "Martes 20:00", code: "2026-08-04-MA-20:00-22:00-P-A-IEDOMI", capacity: 15, enrolled: 0, status: "En Oferta" },
-        { sede: "Cordoba", course: "Electricidad habilitacion Cat III", date: "01/09/2026", schedule: "Martes 18:30", code: "2026-09-01-MA-18:30-21:30-P-A-EHCAT3", capacity: 20, enrolled: 3, status: "En Oferta" },
-        { sede: "Cordoba", course: "Facturacion medica", date: "21/07/2026", schedule: "Martes 18:00", code: "2026-07-21-MA-18:00-20:00-P-A-FACTME", capacity: 20, enrolled: 9, status: "En Oferta" },
-        { sede: "Cordoba", course: "Facturacion medica", date: "08/08/2026", schedule: "Sabado 09:00", code: "2026-08-08-SA-09:00-11:00-P-A-FACTME", capacity: 20, enrolled: 2, status: "En Oferta" },
-        { sede: "Cordoba", course: "Impresion 3D", date: "06/08/2026", schedule: "Jueves 18:00", code: "2026-08-06-JU-18:00-21:00-P-A-IMPR3D", capacity: 12, enrolled: 3, status: "En Oferta" },
-        { sede: "Cordoba", course: "Instalacion Aire Acondicionado", date: "05/09/2026", schedule: "Sabado 12:00", code: "2026-09-05-SA-12:00-14:00-P-A-INSAIR", capacity: 16, enrolled: 0, status: "En Oferta" },
-        { sede: "Cordoba", course: "Microbollos", date: "25/07/2026", schedule: "Sabado 09:00", code: "2026-07-25-SA-09:00-13:00-P-A-MICROB", capacity: 8, enrolled: 0, status: "En Oferta" },
-        { sede: "Cordoba", course: "Molderia, Corte y Confeccion", date: "22/07/2026", schedule: "Miercoles 18:00", code: "2026-07-22-MI-18:00-20:00-P-A-MOLDER", capacity: 14, enrolled: 2, status: "En Oferta" },
-        { sede: "Cordoba", course: "Plomeria", date: "05/08/2026", schedule: "Miercoles 18:30", code: "2026-08-05-MI-18:30-20:30-P-A-PLOMER", capacity: 12, enrolled: 3, status: "En Oferta" },
-        { sede: "Cordoba", course: "Programacion CNC", date: "08/07/2026", schedule: "Miercoles 20:00", code: "2026-07-08-MI-20:00-22:00-P-A-PROCNC", capacity: 14, enrolled: 5, status: "En Oferta" },
-        { sede: "Cordoba", course: "Soldadura", date: "06/07/2026", schedule: "Lunes 19:00", code: "2026-07-06-LU-19:00-21:30-P-A-SOLDAD", capacity: 12, enrolled: 10, status: "Ultimos Lugares" },
-        { sede: "Cordoba", course: "Soldadura", date: "06/08/2026", schedule: "Jueves 19:00", code: "2026-08-06-JU-19:00-21:30-P-A-SOLDAD", capacity: 12, enrolled: 0, status: "En Oferta" },
-        { sede: "Cristo Obrero", course: "Armado de muebles", date: "08/08/2026", schedule: "Sabado 11:30", code: "2026-08-08-SA-11:30-13:30-P-A-MUEBLE", capacity: 16, enrolled: 0, status: "En Oferta" },
-        { sede: "Cristo Obrero", course: "Electricidad Domiciliaria", date: "04/07/2026", schedule: "Sabado 09:00", code: "2026-07-04-SA-09:00-11:00-P-A-IEDOMI", capacity: 15, enrolled: 19, status: "En Oferta" },
-        { sede: "Cristo Obrero", course: "Electricidad habilitacion Cat III", date: "08/08/2026", schedule: "Sabado 11:00", code: "2026-08-08-SA-11:00-14:00-P-A-EHCAT3", capacity: 20, enrolled: 2, status: "En Oferta" },
-        { sede: "Cristo Obrero", course: "Mecanica de motos", date: "25/07/2026", schedule: "Sabado 09:00", code: "2026-07-25-SA-09:00-11:30-P-A-MECMOT", capacity: 16, enrolled: 11, status: "En Oferta" },
-        { sede: "Cristo Obrero", course: "Molderia, Corte y Confeccion", date: "08/08/2026", schedule: "Sabado 09:00", code: "2026-08-08-SA-09:00-11:00-P-A-MOLDER", capacity: 18, enrolled: 7, status: "En Oferta" },
-        { sede: "Cristo Obrero", course: "Plomeria", date: "25/07/2026", schedule: "Sabado 09:00", code: "2026-07-25-SA-09:00-11:00-P-A-PLOMER", capacity: 16, enrolled: 5, status: "En Oferta" },
-        { sede: "Cristo Obrero", course: "Reparacion e instalacion Aire Acondicionado", date: "25/07/2026", schedule: "Sabado 09:00", code: "2026-07-25-SA-09:00-12:00-P-A-AIRACO", capacity: 16, enrolled: 2, status: "En Oferta" },
-        { sede: "Cristo Obrero", course: "Soldadura", date: "18/07/2026", schedule: "Sabado 11:30", code: "2026-07-18-SA-11:30-14:00-P-A-SOLDAD", capacity: 16, enrolled: 7, status: "En Oferta" },
-        { sede: "Remedios de Escalada", course: "Auxiliar de farmacia", date: "16/07/2026", schedule: "Jueves 20:00", code: "2026-07-16-JU-20:00-22:00-P-A-AUXFAR", capacity: 20, enrolled: 9, status: "En Oferta" },
-        { sede: "Remedios de Escalada", course: "Electricidad de motos", date: "16/07/2026", schedule: "Jueves 18:00", code: "2026-07-16-JU-18:00-20:00-P-A-ELEMOT", capacity: 16, enrolled: 4, status: "En Oferta" },
-        { sede: "Remedios de Escalada", course: "Facturacion medica", date: "16/07/2026", schedule: "Jueves 18:00", code: "2026-07-16-JU-18:00-20:00-P-A-FACTME", capacity: 20, enrolled: 5, status: "En Oferta" },
-        { sede: "Remedios de Escalada", course: "Inyeccion de motos", date: "27/08/2026", schedule: "Jueves 20:00", code: "2026-08-27-JU-20:00-22:00-P-A-INYMOT", capacity: 16, enrolled: 2, status: "En Oferta" }
+      "courses": [
+            {
+                  "sede": "Córdoba",
+                  "course": "Armado de muebles",
+                  "date": "2026-08-04",
+                  "schedule": "Martes 20:00",
+                  "code": "2026-08-04-MA-20:00-22:00-P-A-MUEBLE",
+                  "capacity": 12,
+                  "enrolled": 15,
+                  "status": "COMPLETO",
+                  "closed": true
+            },
+            {
+                  "sede": "Córdoba",
+                  "course": "Armado de muebles",
+                  "date": "2026-09-08",
+                  "schedule": "Martes 18:00",
+                  "code": "2026-09-08-MA-18:00-20:00-P-A-MUEBLE",
+                  "capacity": 12,
+                  "enrolled": 0,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Córdoba",
+                  "course": "Auxiliar de farmacia",
+                  "date": "2026-08-08",
+                  "schedule": "Sábado 11:00",
+                  "code": "2026-08-08-SA-11:00-13:00-P-A-AUXFAR",
+                  "capacity": 20,
+                  "enrolled": 2,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Córdoba",
+                  "course": "Auxiliar de farmacia",
+                  "date": "2026-08-12",
+                  "schedule": "Miercoles 18:00",
+                  "code": "2026-08-12-MI-18:00-20:00-P-A-AUXFAR",
+                  "capacity": 20,
+                  "enrolled": 2,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Córdoba",
+                  "course": "Cerrajeria",
+                  "date": "2026-09-07",
+                  "schedule": "Lunes 20:00",
+                  "code": "2026-09-07-LU-20:00-22:00-P-A-CERRAJ",
+                  "capacity": 10,
+                  "enrolled": 0,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Córdoba",
+                  "course": "Electricidad Domiciliaria",
+                  "date": "2026-08-04",
+                  "schedule": "Martes 20:00",
+                  "code": "2026-08-04-MA-20:00-22:00-P-A-IEDOMI",
+                  "capacity": 15,
+                  "enrolled": 0,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Córdoba",
+                  "course": "Electricidad habilitación Cat III",
+                  "date": "2026-09-01",
+                  "schedule": "Martes 18:30",
+                  "code": "2026-09-01-MA-18:30-21:30-P-A-EHCAT3",
+                  "capacity": 20,
+                  "enrolled": 5,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Córdoba",
+                  "course": "Facturación médica",
+                  "date": "2026-07-21",
+                  "schedule": "Martes 18:00",
+                  "code": "2026-07-21-MA-18:00-20:00-P-A-FACTME",
+                  "capacity": 20,
+                  "enrolled": 9,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Córdoba",
+                  "course": "Facturación médica",
+                  "date": "2026-08-08",
+                  "schedule": "Sábado 09:00",
+                  "code": "2026-08-08-SA-09:00-11:00-P-A-FACTME",
+                  "capacity": 20,
+                  "enrolled": 2,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Córdoba",
+                  "course": "Impresión 3D",
+                  "date": "2026-08-06",
+                  "schedule": "Jueves 18:00",
+                  "code": "2026-08-06-JU-18:00-21:00-P-A-IMPR3D",
+                  "capacity": 12,
+                  "enrolled": 4,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Córdoba",
+                  "course": "Instalación Aire Acondicionado",
+                  "date": "2026-09-05",
+                  "schedule": "Sábado 12:00",
+                  "code": "2026-09-05-SA-12:00-14:00-P-A-INSAIR",
+                  "capacity": 16,
+                  "enrolled": 1,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Córdoba",
+                  "course": "Microbollos",
+                  "date": "2026-07-25",
+                  "schedule": "Sábado 09:00",
+                  "code": "2026-07-25-SA-09:00-13:00-P-A-MICROB",
+                  "capacity": 8,
+                  "enrolled": 0,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Córdoba",
+                  "course": "Moldería, Corte y Confección",
+                  "date": "2026-07-22",
+                  "schedule": "Miercoles 18:00",
+                  "code": "2026-07-22-MI-18:00-20:00-P-A-MOLDER",
+                  "capacity": 14,
+                  "enrolled": 3,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Córdoba",
+                  "course": "Plomeria",
+                  "date": "2026-08-05",
+                  "schedule": "Miercoles 18:30",
+                  "code": "2026-08-05-MI-18:30-20:30-P-A-PLOMER",
+                  "capacity": 12,
+                  "enrolled": 5,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Córdoba",
+                  "course": "Programacion CNC",
+                  "date": "2026-07-08",
+                  "schedule": "Miercoles 20:00",
+                  "code": "2026-07-08-MI-20:00-22:00-P-A-PROCNC",
+                  "capacity": 14,
+                  "enrolled": 8,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Córdoba",
+                  "course": "Soldadura",
+                  "date": "2026-08-06",
+                  "schedule": "Jueves 19:00",
+                  "code": "2026-08-06-JU-19:00-21:30-P-A-SOLDAD",
+                  "capacity": 12,
+                  "enrolled": 1,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Cristo Obrero",
+                  "course": "Armado de muebles",
+                  "date": "2026-08-15",
+                  "schedule": "Sábado 11:30",
+                  "code": "2026-08-15-SA-11:30-13:30-P-A-MUEBLE",
+                  "capacity": 16,
+                  "enrolled": 2,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Cristo Obrero",
+                  "course": "Electricidad Domiciliaria",
+                  "date": "2026-07-04",
+                  "schedule": "Sábado 09:00",
+                  "code": "2026-07-04-SA-09:00-11:00-P-A-IEDOMI",
+                  "capacity": 15,
+                  "enrolled": 21,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Cristo Obrero",
+                  "course": "Electricidad habilitación Cat III",
+                  "date": "2026-08-08",
+                  "schedule": "Sábado 11:00",
+                  "code": "2026-08-08-SA-11:00-14:00-P-A-EHCAT3",
+                  "capacity": 20,
+                  "enrolled": 3,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Cristo Obrero",
+                  "course": "Mecanica de motos",
+                  "date": "2026-07-25",
+                  "schedule": "Sábado 09:00",
+                  "code": "2026-07-25-SA-09:00-11:30-P-A-MECMOT",
+                  "capacity": 16,
+                  "enrolled": 12,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Cristo Obrero",
+                  "course": "Moldería, Corte y Confección",
+                  "date": "2026-08-08",
+                  "schedule": "Sábado 09:00",
+                  "code": "2026-08-08-SA-09:00-11:00-P-A-MOLDER",
+                  "capacity": 18,
+                  "enrolled": 4,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Cristo Obrero",
+                  "course": "Plomeria",
+                  "date": "2026-07-25",
+                  "schedule": "Sábado 09:00",
+                  "code": "2026-07-25-SA-09:00-11:00-P-A-PLOMER",
+                  "capacity": 16,
+                  "enrolled": 7,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Cristo Obrero",
+                  "course": "Reparación e instalación Aire Acondicionado",
+                  "date": "2026-07-25",
+                  "schedule": "Sábado 09:00",
+                  "code": "2026-07-25-SA-09:00-12:00-P-A-AIRACO",
+                  "capacity": 16,
+                  "enrolled": 2,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Cristo Obrero",
+                  "course": "Instalación Aire Acondicionado",
+                  "date": "2026-08-22",
+                  "schedule": "Sábado 12:00",
+                  "code": "2026-08-22-SA-12:00-14:00-P-A-INSAIR",
+                  "capacity": 16,
+                  "enrolled": 0,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Cristo Obrero",
+                  "course": "Soldadura",
+                  "date": "2026-07-18",
+                  "schedule": "Sábado 11:30",
+                  "code": "2026-07-18-SA-11:30-14:00-P-A-SOLDAD",
+                  "capacity": 16,
+                  "enrolled": 8,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Remedios de escalada",
+                  "course": "Auxiliar de farmacia",
+                  "date": "2026-07-16",
+                  "schedule": "Jueves 20:00",
+                  "code": "2026-07-16-JU-20:00-22:00-P-A-AUXFAR",
+                  "capacity": 20,
+                  "enrolled": 14,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Remedios de escalada",
+                  "course": "Electricidad de motos",
+                  "date": "2026-07-16",
+                  "schedule": "Jueves 18:00",
+                  "code": "2026-07-16-JU-18:00-20:00-P-A-ELEMOT",
+                  "capacity": 16,
+                  "enrolled": 4,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Remedios de escalada",
+                  "course": "Facturación médica",
+                  "date": "2026-07-16",
+                  "schedule": "Jueves 18:00",
+                  "code": "2026-07-16-JU-18:00-20:00-P-A-FACTME",
+                  "capacity": 20,
+                  "enrolled": 6,
+                  "status": "En Oferta",
+                  "closed": false
+            },
+            {
+                  "sede": "Remedios de escalada",
+                  "course": "Inyección de motos",
+                  "date": "2026-08-27",
+                  "schedule": "Jueves 20:00",
+                  "code": "2026-08-27-JU-20:00-22:00-P-A-INYMOT",
+                  "capacity": 16,
+                  "enrolled": 2,
+                  "status": "En Oferta",
+                  "closed": false
+            }
       ]
-    };
+};
 
     let isUnlocked = false;
     let commercialMonthKey = "2026-07";
@@ -1369,7 +1857,7 @@
         }
         updatedHubSpot = await refreshHubSpotReportData();
         renderAll();
-        toast(`Actualizado: ${updatedSheets ? "Sheets" : ""}${updatedSheets && updatedHubSpot ? " + " : ""}${updatedHubSpot ? "HubSpot" : ""}`);
+        toast(updatedHubSpot ? "Actualizado: ventas + HubSpot" : "Actualizado: ventas. HubSpot pendiente de token seguro");
       } catch (error) {
         console.error("No pude completar la actualizacion", error);
         toast(`No pude completar la actualizacion: ${error.message || error}`);
