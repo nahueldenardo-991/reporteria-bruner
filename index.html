@@ -356,6 +356,14 @@
       border: 1px solid rgba(255, 255, 255, 0.22);
     }
 
+    .dashboard-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-bottom: 14px;
+    }
+
     .metric.accent-blue { border-top: 4px solid var(--blue); }
     .metric.accent-teal { border-top: 4px solid var(--teal); }
     .metric.accent-green { border-top: 4px solid var(--green); }
@@ -519,6 +527,9 @@
     </nav>
 
     <section id="dashboard" class="view active">
+      <div class="dashboard-actions">
+        <button class="good" id="hubspotCodexBtn" title="Copiar pedido y abrir Codex para actualizar HubSpot">Actualizar HubSpot con Codex</button>
+      </div>
       <div class="kpis" id="kpis"></div>
       <div class="layout">
         <article class="card">
@@ -618,13 +629,13 @@
       <div class="commercial-hero">
         <div>
           <h2>Panel general comercial</h2>
-          <div class="hint">Fuente: Inscripcion Bruner Instituto (Respuestas) - snapshot al 08/07/2026.</div>
+          <div class="hint" id="commercialSnapshotHint">Fuente: Inscripcion Bruner Instituto (Respuestas).</div>
         </div>
         <label class="file-label" title="Filtrar cursos por mes de inicio">
           Inicio
           <select id="commercialMonthSelect" aria-label="Mes de inicio comercial"></select>
         </label>
-        <button class="good" id="commercialRefreshBtn" title="Actualizar datos desde Sheets y HubSpot">Actualizar todo</button>
+        <button class="good" id="commercialRefreshBtn" title="Actualizar ventas y cupos desde las planillas">Actualizar comercial</button>
       </div>
       <div class="kpis" id="commercialKpis"></div>
       <div class="layout">
@@ -1662,6 +1673,10 @@
       const monthLabel = commercialMonthLabel(commercialMonthKey);
       const current = commercialData.currentMonth;
       const filteredCourses = commercialFilteredCourses();
+      const snapshot = document.getElementById("commercialSnapshotHint");
+      if (snapshot) {
+        snapshot.textContent = `Fuente: ${commercialData.source || "planillas comerciales"} - actualizado ${commercialData.updatedAt || COMMERCIAL_SNAPSHOT_DATE}.`;
+      }
       const cards = [
         ["Objetivo ventas", totals.remaining, `Cupos por llenar en ${monthLabel}`, "accent-blue"],
         ["Ventas reales julio", current.sales, `${fmt(current.enrollments)} cupos ocupados MTD`, "accent-teal"],
@@ -1833,38 +1848,47 @@
 
     async function refreshCommercialData() {
       const button = document.getElementById("commercialRefreshBtn");
-      if (!UPDATE_FEED_URL && !COMMERCIAL_FEED_URL && !HUBSPOT_REPORT_FEED_URL) {
+      if (!UPDATE_FEED_URL && !COMMERCIAL_FEED_URL) {
         toast("Falta conectar el enlace seguro de actualizacion");
         return;
       }
       button.disabled = true;
       button.textContent = "Actualizando";
-      let updatedSheets = false;
-      let updatedHubSpot = false;
       try {
         if (COMMERCIAL_FEED_URL) {
           const fresh = await loadFeed(COMMERCIAL_FEED_URL);
           if (fresh.commercialData) Object.assign(commercialData, fresh.commercialData);
           else Object.assign(commercialData, fresh);
-          if (Array.isArray(fresh.monthData) && fresh.monthData.length) {
-            monthData.splice(0, monthData.length, ...fresh.monthData);
-            document.getElementById("monthSelect").innerHTML = monthData.map(month => `<option value="${month.key}">${month.label}</option>`).join("");
-          } else if (fresh.currentMonth) {
-            const index = monthData.findIndex(month => month.key === fresh.currentMonth.key);
-            if (index >= 0) monthData[index] = { ...monthData[index], ...fresh.currentMonth };
-          }
-          updatedSheets = true;
         }
-        updatedHubSpot = await refreshHubSpotReportData();
         renderAll();
-        toast(updatedHubSpot ? "Actualizado: ventas + HubSpot" : "Actualizado: ventas. HubSpot pendiente de token seguro");
+        toast("Comercial actualizado: ventas, becas y cupos");
       } catch (error) {
         console.error("No pude completar la actualizacion", error);
         toast(`No pude completar la actualizacion: ${error.message || error}`);
       } finally {
         button.disabled = false;
-        button.textContent = "Actualizar todo";
+        button.textContent = "Actualizar comercial";
       }
+    }
+
+    async function requestHubSpotCodexUpdate() {
+      const prompt = [
+        "Codex, actualiza la reporteria publica de Instituto Bruner desde HubSpot.",
+        "",
+        "URL del tablero: https://nahueldenardo-991.github.io/reporteria-bruner/",
+        "Necesito actualizar los datos de HubSpot con junio finalizado y julio en curso.",
+        "Criterio: contactos creados por Create Date, agrupados por Recent Conversion.",
+        "Mapeo: CBA = Cordoba Capital, VCP = Villa Carlos Paz, ISREM = Remedios de Escalada.",
+        "No mezclar conversiones ONLINE dentro de CBA/VCP/ISREM; dejarlas en Online/no mapeado.",
+        "Conservar la actualizacion comercial desde las planillas y publicar el resultado en GitHub Pages."
+      ].join("\n");
+      try {
+        await navigator.clipboard.writeText(prompt);
+        toast("Pedido HubSpot copiado. Pegalo en Codex para actualizar.");
+      } catch {
+        toast("No pude copiar el pedido. Se abrira Codex para pegarlo manualmente.");
+      }
+      window.open("https://chatgpt.com/", "_blank", "noopener,noreferrer");
     }
 
     function renderAll() {
@@ -1992,6 +2016,7 @@
       renderAll();
       toast(`Objetivo comercial ${commercialMonthLabel(commercialMonthKey)}`);
     });
+    document.getElementById("hubspotCodexBtn").addEventListener("click", requestHubSpotCodexUpdate);
     document.getElementById("commercialRefreshBtn").addEventListener("click", refreshCommercialData);
 
     document.getElementById("unlockBtn").addEventListener("click", () => {
