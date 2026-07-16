@@ -500,7 +500,7 @@
           Mes
           <select id="monthSelect" aria-label="Mes visible"></select>
         </label>
-        <button class="good" id="hubspotCodexTopBtn" title="Copiar pedido y abrir Codex para actualizar HubSpot">Actualizar HubSpot</button>
+        <button class="good" id="hubspotCodexTopBtn" title="Copiar pedido y abrir Codex para actualizar HubSpot">Actualizar HubSpot con Codex</button>
         <span class="pill locked" id="editStatus">Edicion bloqueada</span>
         <button id="unlockBtn" title="Desbloquear edicion con clave">Desbloquear</button>
         <button class="primary" id="saveBtn" title="Guardar ventas manuales">Guardar</button>
@@ -794,9 +794,9 @@
         { id: "otros_no_mapeado", conversion: "Otros / sin conversion reciente", course: "No mapeado", leads: 5 }
       ], cbaLeads: [185,120,93,80,58,37,69,43,108,4,129,14,140,35,0,0], cbaSales: [1,5,10,4,3,0,5,1,3,1,3,0,1,0,0,1], vcpLeads: [82,3,39,19,0,25,23,23,0], vcpSales: [2,3,5,0,2,5,1,3,2], isremLeads: [164,47,99,62], isremSales: [2,6,9,2] }
       ,
-      { key: "jul_2026", label: "JUL 2026", hubspotTotal: 766, online: [
-        { id: "julio_pendiente_hubspot", conversion: "Julio en curso - pendiente de clasificacion HubSpot por Codex", course: "Pendiente clasificar", leads: 766 }
-      ], cbaLeads: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], cbaSales: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], vcpLeads: [0,0,0,0,0,0,0,0,0], vcpSales: [0,0,0,0,0,0,0,0,0], isremLeads: [0,0,0,0], isremSales: [0,0,0,0] }
+      { key: "jul_2026", label: "JUL 2026", hubspotTotal: 750, online: [
+        { id: "julio_no_mapeado", conversion: "Otros / sin conversion reciente", course: "No mapeado", leads: 27 }
+      ], cbaLeads: [96,71,56,44,24,0,26,25,49,7,39,0,54,0,0,0], cbaSales: [2,0,5,0,3,0,1,2,1,0,3,0,1,0,0,0], vcpLeads: [41,0,21,0,0,19,14,26,0], vcpSales: [5,0,3,0,0,2,2,3,0], isremLeads: [63,20,16,12], isremSales: [1,1,5,2] }
     ];
 
     const commercialData = {
@@ -1896,7 +1896,7 @@
       } catch {
         toast("No pude copiar el pedido. Se abrira Codex para pegarlo manualmente.");
       }
-      window.open("https://chatgpt.com/", "_blank", "noopener,noreferrer");
+      window.open("https://chatgpt.com/codex", "_blank", "noopener,noreferrer");
     }
 
     function renderAll() {
