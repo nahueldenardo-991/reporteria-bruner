@@ -1633,10 +1633,10 @@
       const sede = commercialSedeCode(row);
       const course = normalizeMetaText(`${row.course} ${row.code}`);
       const hasCba = sede === "CBA" && /(mueble|auxiliar|farmacia|cerraj|electric|factur|impres|aire|molder|plomer|soldad|cnc)/.test(course);
-      const hasVcp = sede === "VCP" && /(mueble|electric|moto|molder|plomer|aire)/.test(course);
+      const hasVcp = sede === "VCP" && /(mueble|electric|moto|molder|plomer|aire|soldad)/.test(course);
       const hasIsrem = sede === "ISREM" && /(moto|inyeccion|farmacia|factur)/.test(course);
       if (hasCba || hasVcp || hasIsrem) return ["meta-on", "Activa"];
-      return ["meta-unknown", "Sin conectar"];
+      return ["meta-unknown", "Validar Meta"];
     }
 
     function commercialCourseMonth(row) {
