@@ -1946,9 +1946,13 @@
       try {
         const response = await fetch(`${url}${url.includes("?") ? "&" : "?"}t=${Date.now()}`, { cache: "no-store" });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return await response.json();
+        const data = await response.json();
+        if (data && data.ok === false) throw new Error(data.error || "El feed devolvio un error");
+        return data;
       } catch {
-        return loadFeedJsonp(url);
+        const data = await loadFeedJsonp(url);
+        if (data && data.ok === false) throw new Error(data.error || "El feed devolvio un error");
+        return data;
       }
     }
 
