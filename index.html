@@ -863,8 +863,8 @@
       ], cbaLeads: [185,120,93,80,58,37,69,43,108,4,129,14,140,35,0,0], cbaSales: [1,5,10,4,3,0,5,1,3,1,3,0,1,0,0,1], vcpLeads: [82,3,39,19,0,25,23,23,0], vcpSales: [2,3,5,0,2,5,1,3,2], isremLeads: [164,47,99,62], isremSales: [2,6,9,2] }
       ,
       { key: "jul_2026", label: "JUL 2026", hubspotTotal: 1079, online: [
-        { id: "julio_no_mapeado", conversion: "Otros / sin conversion reciente", course: "No mapeado", leads: 48 }
-      ], cbaLeads: [128,94,117,56,30,22,42,35,64,9,58,14,74,0,0,0], cbaSales: [2,0,5,0,3,0,1,2,1,0,3,0,1,0,0,0], vcpLeads: [54,0,29,0,129,24,20,32,0], vcpSales: [5,0,3,0,0,2,2,3,0], isremLeads: [0,0,0,0], isremSales: [1,1,5,2] }
+        { id: "julio_no_mapeado", conversion: "Otros / sin conversion reciente", course: "No mapeado", leads: 3 }
+      ], cbaLeads: [128,94,117,56,30,22,42,35,64,9,58,14,74,0,0,0], cbaSales: [2,0,5,0,3,0,1,2,1,0,3,0,1,0,0,0], vcpLeads: [54,0,29,0,0,24,20,32,0], vcpSales: [5,0,3,0,0,2,2,3,0], isremLeads: [107,22,16,29], isremSales: [1,1,5,2] }
     ];
 
     const commercialData = {
@@ -2090,6 +2090,7 @@
         "1. Tomar de HubSpot los contactos creados por Create Date para el periodo correspondiente.",
         "2. Agrupar por Recent Conversion / recent_conversion_event_name.",
         "3. Mapear sedes: CBA = Cordoba Capital, VCP = Villa Carlos Paz, ISREM = Remedios de Escalada.",
+        "3.b. Importante: los cursos de ISREM pueden figurar en HubSpot como conversiones VCP; mapear a ISREM cuando el curso sea Electricidad Motos, Inyeccion Motos, Auxiliar de Farmacia o Facturacion Medica de Remedios de Escalada.",
         "4. Microbollos viene como Facebook Lead Ads: MICROBOLLOS.",
         "5. No mezclar conversiones ONLINE dentro de CBA/VCP/ISREM; dejarlas en Online/no mapeado.",
         "6. Conciliar: CBA/VCP/ISREM + Online/no mapeado = total HubSpot del periodo.",
