@@ -868,14 +868,14 @@
     ];
 
     const commercialData = {
-          "updatedAt": "21/07/2026 14:07",
+          "updatedAt": "21/07/2026 14:54",
           "source": "Inscripcion Bruner Instituto (Respuestas) + Base Historica",
           "currentMonth": {
                 "label": "Julio 2026",
                 "through": "21/07/2026",
                 "enrollments": 68,
-                "sales": 53,
-                "scholarships": 15,
+                "sales": 54,
+                "scholarships": 14,
                 "bySede": [
                       {
                             "label": "Remedios de Escalada",
@@ -894,8 +894,8 @@
                       {
                             "label": "Córdoba",
                             "enrollments": 34,
-                            "sales": 23,
-                            "scholarships": 11,
+                            "sales": 24,
+                            "scholarships": 10,
                             "occupied": 34
                       }
                 ],
@@ -910,8 +910,8 @@
                       {
                             "label": "Meli",
                             "enrollments": 11,
-                            "sales": 10,
-                            "scholarships": 1,
+                            "sales": 11,
+                            "scholarships": 0,
                             "occupied": 11
                       },
                       {
@@ -2036,14 +2036,17 @@
       }
     }
 
-    async function refreshCommercialData() {
+    async function refreshCommercialData(options = {}) {
+      const silent = options && options.silent === true;
       const button = document.getElementById("commercialRefreshBtn");
       if (!UPDATE_FEED_URL && !COMMERCIAL_FEED_URL) {
-        toast("Falta conectar el enlace seguro de actualizacion");
+        if (!silent) toast("Falta conectar el enlace seguro de actualizacion");
         return;
       }
-      button.disabled = true;
-      button.textContent = "Actualizando";
+      if (button) {
+        button.disabled = true;
+        button.textContent = "Actualizando";
+      }
       try {
         if (COMMERCIAL_FEED_URL) {
           const fresh = await loadFeed(COMMERCIAL_FEED_URL);
@@ -2051,13 +2054,15 @@
           else Object.assign(commercialData, fresh);
         }
         renderAll();
-        toast("Comercial actualizado: ventas, becas y cupos");
+        if (!silent) toast("Comercial actualizado: ventas, becas y cupos");
       } catch (error) {
         console.error("No pude completar la actualizacion", error);
-        toast(`No pude completar la actualizacion: ${error.message || error}`);
+        if (!silent) toast(`No pude completar la actualizacion: ${error.message || error}`);
       } finally {
-        button.disabled = false;
-        button.textContent = "Actualizar comercial";
+        if (button) {
+          button.disabled = false;
+          button.textContent = "Actualizar comercial";
+        }
       }
     }
 
@@ -2373,6 +2378,7 @@
     });
 
     renderAll();
+    refreshCommercialData({ silent: true });
   </script>
 </body>
 </html>
