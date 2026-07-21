@@ -476,6 +476,52 @@
       transform: translateY(0);
     }
 
+    .prompt-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(18, 32, 51, 0.56);
+    }
+
+    .prompt-backdrop.show {
+      display: flex;
+    }
+
+    .prompt-modal {
+      width: min(760px, 100%);
+      max-height: min(86vh, 780px);
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid var(--line);
+      box-shadow: 0 22px 54px rgba(18, 32, 51, 0.28);
+    }
+
+    .prompt-modal textarea {
+      width: 100%;
+      min-height: 320px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px;
+      color: var(--ink);
+      font: 13px/1.45 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      background: #f8fafc;
+    }
+
+    .prompt-modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
     @media (max-width: 1050px) {
       .topbar, .layout, .split { grid-template-columns: 1fr; }
       .actions { justify-content: flex-start; }
@@ -712,6 +758,22 @@
       </article>
     </section>
   </main>
+
+  <div class="prompt-backdrop" id="promptBackdrop" role="dialog" aria-modal="true" aria-labelledby="promptTitle">
+    <div class="prompt-modal">
+      <div class="section-head">
+        <h2 id="promptTitle">Prompt para actualizar con Codex</h2>
+        <span class="pill">Copiar y pegar en este chat</span>
+      </div>
+      <p class="hint">Si el navegador no permite copiar automaticamente, selecciona este texto y pegalo en la app de Codex.</p>
+      <textarea id="codexPromptText" readonly></textarea>
+      <div class="prompt-modal-actions">
+        <button id="promptCloseBtn">Cerrar</button>
+        <button class="good" id="promptCopyBtn">Copiar prompt</button>
+        <button class="primary" id="promptOpenCodexBtn">Abrir Codex</button>
+      </div>
+    </div>
+  </div>
 
   <div class="toast" id="toast"></div>
 
@@ -1954,15 +2016,64 @@
       ].join("\n");
     }
 
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch {
+          // Fall back to the selection-based copy path below.
+        }
+      }
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      textarea.style.top = "0";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      textarea.setSelectionRange(0, textarea.value.length);
+      let copied = false;
+      try {
+        copied = document.execCommand("copy");
+      } catch {
+        copied = false;
+      }
+      textarea.remove();
+      return copied;
+    }
+
+    function openCodexApp() {
+      window.location.href = "codex://";
+    }
+
+    function showCodexPrompt(promptText) {
+      const backdrop = document.getElementById("promptBackdrop");
+      const textarea = document.getElementById("codexPromptText");
+      textarea.value = promptText;
+      backdrop.classList.add("show");
+      setTimeout(() => {
+        textarea.focus();
+        textarea.select();
+      }, 80);
+    }
+
+    function hideCodexPrompt() {
+      document.getElementById("promptBackdrop").classList.remove("show");
+    }
+
     async function requestHubSpotCodexUpdate() {
       const prompt = buildHubSpotCodexPrompt();
-      try {
-        await navigator.clipboard.writeText(prompt);
+      const copied = await copyText(prompt);
+      if (copied) {
         toast("Pedido copiado. Se abrira Codex; pegalo en este mismo chat.");
-      } catch {
-        toast("Se abrira Codex. Si no se copio, pedi el prompt en este chat.");
+        openCodexApp();
+      } else {
+        showCodexPrompt(prompt);
+        toast("No pude copiar automaticamente. Te deje el prompt listo.");
       }
-      window.location.href = "codex://";
     }
 
     function renderAll() {
@@ -2092,6 +2203,16 @@
     });
     document.getElementById("hubspotCodexBtn").addEventListener("click", requestHubSpotCodexUpdate);
     document.getElementById("hubspotCodexTopBtn").addEventListener("click", requestHubSpotCodexUpdate);
+    document.getElementById("promptCloseBtn").addEventListener("click", hideCodexPrompt);
+    document.getElementById("promptBackdrop").addEventListener("click", event => {
+      if (event.target.id === "promptBackdrop") hideCodexPrompt();
+    });
+    document.getElementById("promptCopyBtn").addEventListener("click", async () => {
+      const promptText = document.getElementById("codexPromptText").value;
+      if (await copyText(promptText)) toast("Prompt copiado. Pegalo en este mismo chat.");
+      else toast("Selecciona el texto y copialo con Ctrl+C.");
+    });
+    document.getElementById("promptOpenCodexBtn").addEventListener("click", openCodexApp);
     document.getElementById("commercialRefreshBtn").addEventListener("click", refreshCommercialData);
 
     document.getElementById("unlockBtn").addEventListener("click", () => {
