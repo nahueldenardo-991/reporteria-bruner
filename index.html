@@ -1915,24 +1915,54 @@
       }
     }
 
-    async function requestHubSpotCodexUpdate() {
-      const prompt = [
-        "Codex, actualiza la reporteria publica de Instituto Bruner desde HubSpot.",
+    function buildHubSpotCodexPrompt() {
+      const month = selectedMonth();
+      const requestedAt = new Date().toLocaleString("es-AR", {
+        timeZone: "America/Argentina/Buenos_Aires",
+        dateStyle: "short",
+        timeStyle: "short"
+      });
+      return [
+        "Codex, actualiza el dashboard publico de reporteria de Instituto Bruner.",
         "",
-        "URL del tablero: https://nahueldenardo-991.github.io/reporteria-bruner/",
-        "Necesito actualizar los datos de HubSpot con junio finalizado y julio en curso.",
-        "Criterio: contactos creados por Create Date, agrupados por Recent Conversion.",
-        "Mapeo: CBA = Cordoba Capital, VCP = Villa Carlos Paz, ISREM = Remedios de Escalada.",
-        "No mezclar conversiones ONLINE dentro de CBA/VCP/ISREM; dejarlas en Online/no mapeado.",
-        "Conservar la actualizacion comercial desde las planillas y publicar el resultado en GitHub Pages."
+        "URL publica: https://nahueldenardo-991.github.io/reporteria-bruner/",
+        `Fecha del pedido: ${requestedAt} hora Argentina.`,
+        `Periodo seleccionado en el tablero: ${month.label}.`,
+        "",
+        "Cuentas correctas:",
+        "- HubSpot: nahueldenardo.ic / portal 44685475.",
+        "- Drive y Apps Script: administracion bruner / admbrunerinstituto@gmail.com.",
+        "- GitHub Pages: usar la cuenta logueada de siempre que publica nahueldenardo-991.github.io.",
+        "- Meta: Lorena Capellades, solo si hay que validar estado de campanas/formularios.",
+        "",
+        "Trabajo requerido:",
+        "1. Tomar de HubSpot los contactos creados por Create Date para el periodo correspondiente.",
+        "2. Agrupar por Recent Conversion / recent_conversion_event_name.",
+        "3. Mapear sedes: CBA = Cordoba Capital, VCP = Villa Carlos Paz, ISREM = Remedios de Escalada.",
+        "4. Microbollos viene como Facebook Lead Ads: MICROBOLLOS.",
+        "5. No mezclar conversiones ONLINE dentro de CBA/VCP/ISREM; dejarlas en Online/no mapeado.",
+        "6. Conciliar: CBA/VCP/ISREM + Online/no mapeado = total HubSpot del periodo.",
+        "7. Actualizar tambien junio finalizado y julio en curso si corresponde.",
+        "8. Conservar la data comercial desde las planillas de Drive: ventas reales, becas, cursos cerrados e inscriptos.",
+        "9. Mantener las formulas/logica del HTML y no romper el boton Actualizar comercial.",
+        "10. Publicar los cambios en GitHub Pages en el mismo link publico.",
+        "",
+        "Verificacion final:",
+        "- Confirmar totales de leads por sede y online/no mapeado.",
+        "- Confirmar que ventas/becas/cupos sigan tomando datos de Drive.",
+        "- Confirmar que el link publico sigue siendo el mismo."
       ].join("\n");
+    }
+
+    async function requestHubSpotCodexUpdate() {
+      const prompt = buildHubSpotCodexPrompt();
       try {
         await navigator.clipboard.writeText(prompt);
-        toast("Pedido HubSpot copiado. Pegalo en Codex para actualizar.");
+        toast("Pedido copiado. Se abrira Codex; pegalo en este mismo chat.");
       } catch {
-        toast("No pude copiar el pedido. Se abrira Codex para pegarlo manualmente.");
+        toast("Se abrira Codex. Si no se copio, pedi el prompt en este chat.");
       }
-      window.open("https://chatgpt.com/codex", "_blank", "noopener,noreferrer");
+      window.location.href = "codex://";
     }
 
     function renderAll() {
