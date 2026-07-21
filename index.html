@@ -2054,7 +2054,7 @@
           else Object.assign(commercialData, fresh);
         }
         renderAll();
-        if (!silent) toast("Comercial actualizado: ventas, becas y cupos");
+        if (!silent) toast("Comercial actualizado: ventas, becas, cupos y campanas Meta");
       } catch (error) {
         console.error("No pude completar la actualizacion", error);
         if (!silent) toast(`No pude completar la actualizacion: ${error.message || error}`);
@@ -2084,7 +2084,7 @@
         "- HubSpot: nahueldenardo.ic / portal 44685475.",
         "- Drive y Apps Script: administracion bruner / admbrunerinstituto@gmail.com.",
         "- GitHub Pages: usar la cuenta logueada de siempre que publica nahueldenardo-991.github.io.",
-        "- Meta: Lorena Capellades, solo si hay que validar estado de campanas/formularios.",
+        "- Meta: Lorena Capellades. Validar obligatoriamente el estado de campanas por formulario asignado.",
         "",
         "Trabajo requerido:",
         "1. Tomar de HubSpot los contactos creados por Create Date para el periodo correspondiente.",
@@ -2094,13 +2094,17 @@
         "5. No mezclar conversiones ONLINE dentro de CBA/VCP/ISREM; dejarlas en Online/no mapeado.",
         "6. Conciliar: CBA/VCP/ISREM + Online/no mapeado = total HubSpot del periodo.",
         "7. Actualizar tambien junio finalizado y julio en curso si corresponde.",
-        "8. Conservar la data comercial desde las planillas de Drive: ventas reales, becas, cursos cerrados e inscriptos.",
-        "9. Mantener las formulas/logica del HTML y no romper el boton Actualizar comercial.",
-        "10. Publicar los cambios en GitHub Pages en el mismo link publico.",
+        "8. Actualizar el estado de campanas Meta para cada curso/sede usando la cuenta de Lorena Capellades.",
+        "9. Para validar Meta, tomar el formulario asignado a cada campana; CBA corresponde a Cordoba Capital, VCP a Villa Carlos Paz e ISREM a Remedios de Escalada.",
+        "10. Si una campana esta activa en Meta, mostrar Activa en el dashboard aunque el curso venga de una fecha anterior o ya estuviera cargado.",
+        "11. Conservar la data comercial desde las planillas de Drive: ventas reales, becas, cursos cerrados e inscriptos.",
+        "12. Mantener las formulas/logica del HTML y no romper los botones Actualizar comercial ni Actualizar HubSpot con Codex.",
+        "13. Publicar los cambios en GitHub Pages en el mismo link publico.",
         "",
         "Verificacion final:",
         "- Confirmar totales de leads por sede y online/no mapeado.",
         "- Confirmar que ventas/becas/cupos sigan tomando datos de Drive.",
+        "- Confirmar que la columna Meta/campanas quedo actualizada por formulario asignado.",
         "- Confirmar que el link publico sigue siendo el mismo."
       ].join("\n");
     }
