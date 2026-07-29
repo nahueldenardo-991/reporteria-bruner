@@ -545,7 +545,7 @@
     <div class="topbar">
       <div>
         <h1>Reporteria Junio 2026 | Instituto Bruner</h1>
-        <div class="subhead">Historico cargado desde Excel - junio cerrado - julio en curso - HubSpot actualizado 21/07/2026</div>
+        <div class="subhead">Historico cargado desde Excel - junio cerrado - julio en curso - HubSpot actualizado 29/07/2026</div>
       </div>
       <div class="actions">
         <label class="file-label" title="Cambiar mes visible">
@@ -632,7 +632,7 @@
     <section id="cba" class="view">
       <article class="card">
         <div class="section-head">
-          <h2>CBA · Cordoba Capital</h2>
+          <h2>CBA Â· Cordoba Capital</h2>
           <span class="pill">Ventas desde planillas</span>
         </div>
         <div class="table-wrap"><table id="cbaTable"></table></div>
@@ -642,7 +642,7 @@
     <section id="vcp" class="view">
       <article class="card">
         <div class="section-head">
-          <h2>VCP · Villa Carlos Paz</h2>
+          <h2>VCP Â· Villa Carlos Paz</h2>
           <span class="pill">Ventas desde planillas</span>
         </div>
         <div class="table-wrap"><table id="vcpTable"></table></div>
@@ -652,7 +652,7 @@
     <section id="isrem" class="view">
       <article class="card">
         <div class="section-head">
-          <h2>ISREM Â· Remedios de Escalada</h2>
+          <h2>ISREM Ã‚Â· Remedios de Escalada</h2>
           <span class="pill">Ventas desde planillas</span>
         </div>
         <div class="table-wrap"><table id="isremTable"></table></div>
@@ -825,7 +825,7 @@
     const UPDATE_FEED_URL = "https://script.google.com/macros/s/AKfycbwB-XrrtAZvEWQ0yRnlvtKpczJGoTapNknunLpQx8Oykb5YTjUBm9vuDjo3UtfFKWwQ/exec?action=reporteriaFeed";
     const COMMERCIAL_FEED_URL = UPDATE_FEED_URL;
     const HUBSPOT_REPORT_FEED_URL = "";
-    const COMMERCIAL_SNAPSHOT_DATE = "2026-07-16";
+    const COMMERCIAL_SNAPSHOT_DATE = "2026-07-29";
 
     const cbaCourses = [
       "Electricista Inicial", "Cerrajeria", "Muebles Armado y Diseno", "Soldadura y Herreria",
@@ -862,71 +862,78 @@
         { id: "otros_no_mapeado", conversion: "Otros / sin conversion reciente", course: "No mapeado", leads: 5 }
       ], cbaLeads: [185,120,93,80,58,37,69,43,108,4,129,14,140,35,0,0], cbaSales: [1,5,10,4,3,0,5,1,3,1,3,0,1,0,0,1], vcpLeads: [82,3,39,19,0,25,23,23,0], vcpSales: [2,3,5,0,2,5,1,3,2], isremLeads: [164,47,99,62], isremSales: [2,6,9,2] }
       ,
-      { key: "jul_2026", label: "JUL 2026", hubspotTotal: 1079, online: [
-        { id: "julio_no_mapeado", conversion: "Otros / sin conversion reciente", course: "No mapeado", leads: 3 }
-      ], cbaLeads: [128,94,117,56,30,22,42,35,64,9,58,14,74,0,0,0], cbaSales: [2,0,5,0,3,0,1,2,1,0,3,0,1,0,0,0], vcpLeads: [54,0,29,0,0,24,20,32,0], vcpSales: [5,0,3,0,0,2,2,3,0], isremLeads: [107,22,16,29], isremSales: [1,1,5,2] }
+      { key: "jul_2026", label: "JUL 2026", hubspotTotal: 1583, online: [
+        { id: "julio_no_mapeado", conversion: "Online/no mapeado", course: "No mapeado", leads: 3 }
+      ], cbaLeads: [166,132,179,81,39,34,77,60,78,21,119,14,144,0,0,30], cbaSales: [2,0,5,0,3,0,1,2,1,0,3,0,1,0,0,0], vcpLeads: [85,0,29,0,0,24,26,39,16], vcpSales: [5,0,3,0,0,2,2,3,0], isremLeads: [107,33,16,31], isremSales: [1,1,5,2] }
     ];
 
     const commercialData = {
-          "updatedAt": "21/07/2026 14:54",
+          "updatedAt": "29/07/2026 15:52",
           "source": "Inscripcion Bruner Instituto (Respuestas) + Base Historica",
           "currentMonth": {
                 "label": "Julio 2026",
-                "through": "21/07/2026",
-                "enrollments": 68,
-                "sales": 54,
-                "scholarships": 14,
+                "through": "29/07/2026",
+                "enrollments": 99,
+                "sales": 83,
+                "scholarships": 16,
                 "bySede": [
                       {
-                            "label": "Remedios de Escalada",
-                            "enrollments": 10,
-                            "sales": 10,
-                            "scholarships": 0,
-                            "occupied": 10
-                      },
-                      {
                             "label": "Cristo Obrero",
-                            "enrollments": 24,
-                            "sales": 20,
+                            "enrollments": 34,
+                            "sales": 30,
                             "scholarships": 4,
-                            "occupied": 24
+                            "occupied": 34
                       },
                       {
-                            "label": "Córdoba",
-                            "enrollments": 34,
-                            "sales": 24,
-                            "scholarships": 10,
-                            "occupied": 34
-                      }
-                ],
-                "byAdvisor": [
+                            "label": "Cordoba",
+                            "enrollments": 53,
+                            "sales": 41,
+                            "scholarships": 12,
+                            "occupied": 53
+                      },
                       {
-                            "label": "Claudia",
+                            "label": "Remedios de Escalada",
                             "enrollments": 12,
                             "sales": 12,
                             "scholarships": 0,
                             "occupied": 12
+                      }
+                ],
+                "byAdvisor": [
+                      {
+                            "label": "Juli",
+                            "enrollments": 19,
+                            "sales": 19,
+                            "scholarships": 0,
+                            "occupied": 19
+                      },
+                      {
+                            "label": "Clau",
+                            "enrollments": 18,
+                            "sales": 18,
+                            "scholarships": 0,
+                            "occupied": 18
                       },
                       {
                             "label": "Meli",
-                            "enrollments": 11,
-                            "sales": 11,
+                            "enrollments": 16,
+                            "sales": 16,
                             "scholarships": 0,
-                            "occupied": 11
+                            "occupied": 16
                       },
                       {
                             "label": "Susi",
-                            "enrollments": 10,
-                            "sales": 10,
+                            "enrollments": 15,
+                            "sales": 15,
                             "scholarships": 0,
-                            "occupied": 10
+                            "occupied": 15
                       },
                       {
-                            "label": "Juli",
-                            "enrollments": 10,
-                            "sales": 10,
+                            "label": "Lore",
+                            "enrollments": 5,
+                            "sales": 5,
                             "scholarships": 0,
-                            "occupied": 10
+                            "occupied": 5
                       },
                       {
                             "label": "Mica",
@@ -936,32 +943,18 @@
                             "occupied": 4
                       },
                       {
-                            "label": "Lore",
+                            "label": "Sol",
+                            "enrollments": 10,
+                            "sales": 3,
+                            "scholarships": 7,
+                            "occupied": 10
+                      },
+                      {
+                            "label": "Vale",
                             "enrollments": 3,
                             "sales": 3,
                             "scholarships": 0,
                             "occupied": 3
-                      },
-                      {
-                            "label": "Sol",
-                            "enrollments": 7,
-                            "sales": 2,
-                            "scholarships": 5,
-                            "occupied": 7
-                      },
-                      {
-                            "label": "Clau",
-                            "enrollments": 1,
-                            "sales": 1,
-                            "scholarships": 0,
-                            "occupied": 1
-                      },
-                      {
-                            "label": "Vale",
-                            "enrollments": 1,
-                            "sales": 1,
-                            "scholarships": 0,
-                            "occupied": 1
                       },
                       {
                             "label": "Mati P",
@@ -1101,12 +1094,12 @@
                 {
                       "key": "2026-07",
                       "label": "Julio 2026",
-                      "enrollments": 68
+                      "enrollments": 99
                 }
           ],
           "courses": [
                 {
-                      "sede": "Córdoba",
+                      "sede": "CÃ³rdoba",
                       "course": "Armado de muebles",
                       "date": "2026-08-04",
                       "schedule": "Martes 20:00",
@@ -1120,7 +1113,7 @@
                       "closed": true
                 },
                 {
-                      "sede": "Córdoba",
+                      "sede": "CÃ³rdoba",
                       "course": "Armado de muebles",
                       "date": "2026-09-08",
                       "schedule": "Martes 18:00",
@@ -1134,10 +1127,10 @@
                       "closed": false
                 },
                 {
-                      "sede": "Córdoba",
+                      "sede": "CÃ³rdoba",
                       "course": "Auxiliar de farmacia",
                       "date": "2026-08-08",
-                      "schedule": "Sábado 11:00",
+                      "schedule": "SÃ¡bado 11:00",
                       "code": "2026-08-08-SA-11:00-13:00-P-A-AUXFAR",
                       "capacity": 20,
                       "enrolled": 3,
@@ -1148,7 +1141,7 @@
                       "closed": false
                 },
                 {
-                      "sede": "Córdoba",
+                      "sede": "CÃ³rdoba",
                       "course": "Auxiliar de farmacia",
                       "date": "2026-08-12",
                       "schedule": "Miercoles 18:00",
@@ -1162,7 +1155,7 @@
                       "closed": false
                 },
                 {
-                      "sede": "Córdoba",
+                      "sede": "CÃ³rdoba",
                       "course": "Cerrajeria",
                       "date": "2026-09-07",
                       "schedule": "Lunes 20:00",
@@ -1176,7 +1169,7 @@
                       "closed": false
                 },
                 {
-                      "sede": "Córdoba",
+                      "sede": "CÃ³rdoba",
                       "course": "Electricidad Domiciliaria",
                       "date": "2026-09-08",
                       "schedule": "Martes 20:00",
@@ -1190,8 +1183,8 @@
                       "closed": false
                 },
                 {
-                      "sede": "Córdoba",
-                      "course": "Electricidad habilitación Cat III",
+                      "sede": "CÃ³rdoba",
+                      "course": "Electricidad habilitaciÃ³n Cat III",
                       "date": "2026-09-01",
                       "schedule": "Martes 18:30",
                       "code": "2026-09-01-MA-18:30-21:30-P-A-EHCAT3",
@@ -1204,8 +1197,8 @@
                       "closed": false
                 },
                 {
-                      "sede": "Córdoba",
-                      "course": "Facturación médica",
+                      "sede": "CÃ³rdoba",
+                      "course": "FacturaciÃ³n mÃ©dica",
                       "date": "2026-07-21",
                       "schedule": "Martes 18:00",
                       "code": "2026-07-21-MA-18:00-20:00-P-A-FACTME",
@@ -1218,10 +1211,10 @@
                       "closed": false
                 },
                 {
-                      "sede": "Córdoba",
-                      "course": "Facturación médica",
+                      "sede": "CÃ³rdoba",
+                      "course": "FacturaciÃ³n mÃ©dica",
                       "date": "2026-08-08",
-                      "schedule": "Sábado 09:00",
+                      "schedule": "SÃ¡bado 09:00",
                       "code": "2026-08-08-SA-09:00-11:00-P-A-FACTME",
                       "capacity": 20,
                       "enrolled": 2,
@@ -1232,8 +1225,8 @@
                       "closed": false
                 },
                 {
-                      "sede": "Córdoba",
-                      "course": "Impresión 3D",
+                      "sede": "CÃ³rdoba",
+                      "course": "ImpresiÃ³n 3D",
                       "date": "2026-08-06",
                       "schedule": "Jueves 18:00",
                       "code": "2026-08-06-JU-18:00-21:00-P-A-IMPR3D",
@@ -1246,10 +1239,10 @@
                       "closed": false
                 },
                 {
-                      "sede": "Córdoba",
-                      "course": "Instalación Aire Acondicionado",
+                      "sede": "CÃ³rdoba",
+                      "course": "InstalaciÃ³n Aire Acondicionado",
                       "date": "2026-09-05",
-                      "schedule": "Sábado 12:00",
+                      "schedule": "SÃ¡bado 12:00",
                       "code": "2026-09-05-SA-12:00-14:00-P-A-INSAIR",
                       "capacity": 16,
                       "enrolled": 2,
@@ -1260,10 +1253,10 @@
                       "closed": false
                 },
                 {
-                      "sede": "Córdoba",
+                      "sede": "CÃ³rdoba",
                       "course": "Microbollos",
                       "date": "2026-09-05",
-                      "schedule": "Sábado 09:00",
+                      "schedule": "SÃ¡bado 09:00",
                       "code": "2026-09-05-SA-09:00-13:00-P-A-MICROB",
                       "capacity": 8,
                       "enrolled": 0,
@@ -1274,8 +1267,8 @@
                       "closed": false
                 },
                 {
-                      "sede": "Córdoba",
-                      "course": "Moldería, Corte y Confección",
+                      "sede": "CÃ³rdoba",
+                      "course": "MolderÃ­a, Corte y ConfecciÃ³n",
                       "date": "2026-08-12",
                       "schedule": "Miercoles 18:00",
                       "code": "2026-08-12-MI-18:00-20:00-P-A-MOLDER",
@@ -1288,7 +1281,7 @@
                       "closed": false
                 },
                 {
-                      "sede": "Córdoba",
+                      "sede": "CÃ³rdoba",
                       "course": "Plomeria",
                       "date": "2026-08-05",
                       "schedule": "Miercoles 18:30",
@@ -1302,7 +1295,7 @@
                       "closed": false
                 },
                 {
-                      "sede": "Córdoba",
+                      "sede": "CÃ³rdoba",
                       "course": "Programacion CNC",
                       "date": "2026-07-08",
                       "schedule": "Miercoles 20:00",
@@ -1316,7 +1309,7 @@
                       "closed": false
                 },
                 {
-                      "sede": "Córdoba",
+                      "sede": "CÃ³rdoba",
                       "course": "Soldadura",
                       "date": "2026-08-06",
                       "schedule": "Jueves 19:00",
@@ -1333,7 +1326,7 @@
                       "sede": "Cristo Obrero",
                       "course": "Armado de muebles",
                       "date": "2026-08-15",
-                      "schedule": "Sábado 11:30",
+                      "schedule": "SÃ¡bado 11:30",
                       "code": "2026-08-15-SA-11:30-13:30-P-A-MUEBLE",
                       "capacity": 16,
                       "enrolled": 4,
@@ -1345,9 +1338,9 @@
                 },
                 {
                       "sede": "Cristo Obrero",
-                      "course": "Electricidad habilitación Cat III",
+                      "course": "Electricidad habilitaciÃ³n Cat III",
                       "date": "2026-08-08",
-                      "schedule": "Sábado 11:00",
+                      "schedule": "SÃ¡bado 11:00",
                       "code": "2026-08-08-SA-11:00-14:00-P-A-EHCAT3",
                       "capacity": 20,
                       "enrolled": 4,
@@ -1361,7 +1354,7 @@
                       "sede": "Cristo Obrero",
                       "course": "Mecanica de motos",
                       "date": "2026-07-25",
-                      "schedule": "Sábado 09:00",
+                      "schedule": "SÃ¡bado 09:00",
                       "code": "2026-07-25-SA-09:00-11:30-P-A-MECMOT",
                       "capacity": 16,
                       "enrolled": 12,
@@ -1373,9 +1366,9 @@
                 },
                 {
                       "sede": "Cristo Obrero",
-                      "course": "Moldería, Corte y Confección",
+                      "course": "MolderÃ­a, Corte y ConfecciÃ³n",
                       "date": "2026-08-08",
-                      "schedule": "Sábado 09:00",
+                      "schedule": "SÃ¡bado 09:00",
                       "code": "2026-08-08-SA-09:00-11:00-P-A-MOLDER",
                       "capacity": 18,
                       "enrolled": 8,
@@ -1389,7 +1382,7 @@
                       "sede": "Cristo Obrero",
                       "course": "Plomeria",
                       "date": "2026-07-25",
-                      "schedule": "Sábado 09:00",
+                      "schedule": "SÃ¡bado 09:00",
                       "code": "2026-07-25-SA-09:00-11:00-P-A-PLOMER",
                       "capacity": 16,
                       "enrolled": 7,
@@ -1401,9 +1394,9 @@
                 },
                 {
                       "sede": "Cristo Obrero",
-                      "course": "Reparación e instalación Aire Acondicionado",
+                      "course": "ReparaciÃ³n e instalaciÃ³n Aire Acondicionado",
                       "date": "2026-08-15",
-                      "schedule": "Sábado 09:00",
+                      "schedule": "SÃ¡bado 09:00",
                       "code": "2026-08-15-SA-09:00-12:00-P-A-AIRACO",
                       "capacity": 16,
                       "enrolled": 3,
@@ -1415,9 +1408,9 @@
                 },
                 {
                       "sede": "Cristo Obrero",
-                      "course": "Instalación Aire Acondicionado",
+                      "course": "InstalaciÃ³n Aire Acondicionado",
                       "date": "2026-08-22",
-                      "schedule": "Sábado 12:00",
+                      "schedule": "SÃ¡bado 12:00",
                       "code": "2026-08-22-SA-12:00-14:00-P-A-INSAIR",
                       "capacity": 16,
                       "enrolled": 0,
@@ -1431,7 +1424,7 @@
                       "sede": "Cristo Obrero",
                       "course": "Soldadura",
                       "date": "2026-07-18",
-                      "schedule": "Sábado 11:30",
+                      "schedule": "SÃ¡bado 11:30",
                       "code": "2026-07-18-SA-11:30-14:00-P-A-SOLDAD",
                       "capacity": 16,
                       "enrolled": 10,
@@ -1471,7 +1464,7 @@
                 },
                 {
                       "sede": "Remedios de escalada",
-                      "course": "Facturación médica",
+                      "course": "FacturaciÃ³n mÃ©dica",
                       "date": "2026-07-16",
                       "schedule": "Jueves 18:00",
                       "code": "2026-07-16-JU-18:00-20:00-P-A-FACTME",
@@ -1485,7 +1478,7 @@
                 },
                 {
                       "sede": "Remedios de escalada",
-                      "course": "Inyección de motos",
+                      "course": "InyecciÃ³n de motos",
                       "date": "2026-08-27",
                       "schedule": "Jueves 20:00",
                       "code": "2026-08-27-JU-20:00-22:00-P-A-INYMOT",
@@ -2038,8 +2031,8 @@
 
     function feedErrorMessage(error) {
       const text = String(error || "")
-        .replace(/AcciÃ³n|AcciÃƒÂ³n/g, "Accion")
-        .replace(/invÃ¡lida|invÃƒÂ¡lida/g, "invalida");
+        .replace(/AcciÃƒÂ³n|AcciÃƒÆ’Ã‚Â³n/g, "Accion")
+        .replace(/invÃƒÂ¡lida|invÃƒÆ’Ã‚Â¡lida/g, "invalida");
       if (/accion invalida/i.test(text)) {
         return "backend comercial no publicado. Los datos visibles se conservaron; hay que republicar el Apps Script de reporteria.";
       }
