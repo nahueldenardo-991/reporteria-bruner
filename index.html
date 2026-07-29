@@ -2027,13 +2027,23 @@
         const response = await fetch(`${url}${url.includes("?") ? "&" : "?"}t=${Date.now()}`, { cache: "no-store" });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
-        if (data && data.ok === false) throw new Error(data.error || "El feed devolvio un error");
+        if (data && data.ok === false) throw new Error(feedErrorMessage(data.error));
         return data;
       } catch {
         const data = await loadFeedJsonp(url);
-        if (data && data.ok === false) throw new Error(data.error || "El feed devolvio un error");
+        if (data && data.ok === false) throw new Error(feedErrorMessage(data.error));
         return data;
       }
+    }
+
+    function feedErrorMessage(error) {
+      const text = String(error || "")
+        .replace(/AcciÃ³n|AcciÃƒÂ³n/g, "Accion")
+        .replace(/invÃ¡lida|invÃƒÂ¡lida/g, "invalida");
+      if (/accion invalida/i.test(text)) {
+        return "backend comercial no publicado. Los datos visibles se conservaron; hay que republicar el Apps Script de reporteria.";
+      }
+      return text || "el feed devolvio un error";
     }
 
     async function refreshCommercialData(options = {}) {
@@ -2057,7 +2067,7 @@
         if (!silent) toast("Comercial actualizado: ventas, becas, cupos y campanas Meta");
       } catch (error) {
         console.error("No pude completar la actualizacion", error);
-        if (!silent) toast(`No pude completar la actualizacion: ${error.message || error}`);
+        if (!silent) toast(`No se actualizo comercial: ${error.message || error}`);
       } finally {
         if (button) {
           button.disabled = false;
