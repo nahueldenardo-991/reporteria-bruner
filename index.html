@@ -1616,21 +1616,47 @@
       };
     }
 
+    function commercialSnapshotForMonth(month) {
+      if (!month || month.key !== "jul_2026" || !commercialData.currentMonth) return null;
+      return commercialData.currentMonth;
+    }
+
+    function commercialSalesByGroup(month) {
+      const snapshot = commercialSnapshotForMonth(month);
+      const result = {};
+      if (!snapshot || !Array.isArray(snapshot.bySede)) return result;
+      snapshot.bySede.forEach(row => {
+        const label = normalize(row.label);
+        if (label.includes("cordoba")) result.cba = Number(row.sales || 0);
+        if (label.includes("cristo obrero") || label.includes("villa carlos paz")) result.vcp = Number(row.sales || 0);
+        if (label.includes("remedios")) result.isrem = Number(row.sales || 0);
+      });
+      return result;
+    }
+
     function renderKpis() {
       const data = currentData();
       const month = selectedMonth();
       const cba = totals(data.cba);
       const vcp = totals(data.vcp);
       const isrem = totals(data.isrem);
+      const salesByGroup = commercialSalesByGroup(month);
+      const cbaVentas = salesByGroup.cba ?? cba.ventas;
+      const vcpVentas = salesByGroup.vcp ?? vcp.ventas;
+      const isremVentas = salesByGroup.isrem ?? isrem.ventas;
       const online = sum(data.online, "leads");
       const mapped = cba.leads + vcp.leads + isrem.leads;
-      const totalVentas = cba.ventas + vcp.ventas + isrem.ventas;
+      const commercialSnapshot = commercialSnapshotForMonth(month);
+      const totalVentas = commercialSnapshot ? Number(commercialSnapshot.sales || 0) : cbaVentas + vcpVentas + isremVentas;
       const totalTarget = cba.target + vcp.target + isrem.target;
+      const ventasNote = commercialSnapshot
+        ? `Reales Drive - ${fmt(commercialSnapshot.enrollments || 0)} ocupados / ${fmt(commercialSnapshot.scholarships || 0)} becas`
+        : `Objetivo ${fmt(totalTarget)} - Cumpl ${pct(totalTarget ? totalVentas / totalTarget : 0)}`;
       const cards = [
-        ["Leads CBA", cba.leads, `Ventas ${fmt(cba.ventas)} - Conv ${pct(cba.conv)}`],
-        ["Leads VCP", vcp.leads, `Ventas ${fmt(vcp.ventas)} - Conv ${pct(vcp.conv)}`],
-        ["Leads ISREM", isrem.leads, `Ventas ${fmt(isrem.ventas)} - Conv ${pct(isrem.conv)}`],
-        ["Ventas totales", totalVentas, `Objetivo ${fmt(totalTarget)} - Cumpl ${pct(totalTarget ? totalVentas / totalTarget : 0)}`],
+        ["Leads CBA", cba.leads, `Ventas ${fmt(cbaVentas)} - Conv ${pct(cba.leads ? cbaVentas / cba.leads : 0)}`],
+        ["Leads VCP", vcp.leads, `Ventas ${fmt(vcpVentas)} - Conv ${pct(vcp.leads ? vcpVentas / vcp.leads : 0)}`],
+        ["Leads ISREM", isrem.leads, `Ventas ${fmt(isremVentas)} - Conv ${pct(isrem.leads ? isremVentas / isrem.leads : 0)}`],
+        ["Ventas totales", totalVentas, ventasNote],
         ["Online/no mapeado", online, "Separado de sedes"],
         ["Total del mes", month.hubspotTotal, `${fmt(mapped)} sabana + ${fmt(online)} separado`]
       ];
@@ -1649,15 +1675,21 @@
       const cba = totals(data.cba);
       const vcp = totals(data.vcp);
       const isrem = totals(data.isrem);
+      const salesByGroup = commercialSalesByGroup(month);
+      const cbaVentas = salesByGroup.cba ?? cba.ventas;
+      const vcpVentas = salesByGroup.vcp ?? vcp.ventas;
+      const isremVentas = salesByGroup.isrem ?? isrem.ventas;
       const online = sum(data.online, "leads");
       const mapped = cba.leads + vcp.leads + isrem.leads;
       const control = mapped + online;
+      const commercialSnapshot = commercialSnapshotForMonth(month);
+      const totalVentas = commercialSnapshot ? Number(commercialSnapshot.sales || 0) : cbaVentas + vcpVentas + isremVentas;
       const rows = [
-        ["CBA", cba.leads, cba.ventas, pct(cba.conv), cba.target, pct(cba.cumplimiento)],
-        ["VCP", vcp.leads, vcp.ventas, pct(vcp.conv), vcp.target, pct(vcp.cumplimiento)],
-        ["ISREM", isrem.leads, isrem.ventas, pct(isrem.conv), isrem.target, pct(isrem.cumplimiento)],
+        ["CBA", cba.leads, cbaVentas, pct(cba.leads ? cbaVentas / cba.leads : 0), cba.target, pct(cba.target ? cbaVentas / cba.target : 0)],
+        ["VCP", vcp.leads, vcpVentas, pct(vcp.leads ? vcpVentas / vcp.leads : 0), vcp.target, pct(vcp.target ? vcpVentas / vcp.target : 0)],
+        ["ISREM", isrem.leads, isremVentas, pct(isrem.leads ? isremVentas / isrem.leads : 0), isrem.target, pct(isrem.target ? isremVentas / isrem.target : 0)],
         ["Online / no mapeado", online, "-", "-", "-", "-"],
-        ["Total conciliado", control, cba.ventas + vcp.ventas + isrem.ventas, "-", cba.target + vcp.target + isrem.target, "-"]
+        ["Total conciliado", control, totalVentas, "-", cba.target + vcp.target + isrem.target, commercialSnapshot ? "Ventas reales Drive" : "-"]
       ];
       document.getElementById("summaryTable").innerHTML = `
         <thead><tr><th>Grupo</th><th class="num">Leads</th><th class="num">Ventas</th><th class="num">Conv%</th><th class="num">Obj. ventas</th><th class="num">Cumpl%</th></tr></thead>
