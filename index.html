@@ -1510,6 +1510,7 @@
       const expected = sede === "cba" ? 0.06 : 0.10;
       return courses.map((course, index) => ({
         id: `${month.key}_${sede}_${index}`,
+        sede,
         course,
         leads: leads[index] || 0,
         baseSales: sales[index] || 0,
@@ -1579,10 +1580,22 @@
     const fmt = value => Number(value || 0).toLocaleString("es-AR");
     const pct = value => `${((Number(value) || 0) * 100).toLocaleString("es-AR", { maximumFractionDigits: 1 })}%`;
     const sum = (rows, key) => rows.reduce((acc, row) => acc + (Number(row[key]) || 0), 0);
-    const rowSales = row => Number(row.baseSales || 0);
+    function rowSales(row) {
+      const month = selectedMonth();
+      const snapshot = commercialSnapshotForMonth(month);
+      if (snapshot) {
+        const exact = commercialCourseSales(row);
+        return exact === null ? null : exact;
+      }
+      return Number(row.baseSales || 0);
+    }
 
     function calcRow(row) {
       const ventas = rowSales(row);
+      if (ventas === null) {
+        const leadsDia = row.leads / Math.max(1, state.config.elapsedDays);
+        return { ventas: null, conv: null, cumplimiento: null, faltanVentas: null, leadsFaltantes: null, leadsDia, leadsDiaNecesarios: null };
+      }
       const conv = row.leads ? ventas / row.leads : 0;
       const cumplimiento = row.target ? ventas / row.target : 0;
       const faltanVentas = Math.max(0, row.target - ventas);
@@ -1597,6 +1610,7 @@
     function statusFor(row) {
       const c = calcRow(row);
       if (!row.leads) return ["empty", "Sin leads"];
+      if (c.ventas === null) return ["empty", "Venta por curso no detallada"];
       if (!c.ventas) return ["empty", "Sin venta"];
       if (c.ventas >= row.target) return ["good", "Cumplido"];
       if (c.ventas >= row.target * 0.8) return ["mid", "Parcial"];
@@ -1605,7 +1619,10 @@
 
     function totals(rows) {
       const leads = sum(rows, "leads");
-      const ventas = rows.reduce((acc, row) => acc + rowSales(row), 0);
+      const month = selectedMonth();
+      const salesByGroup = commercialSalesByGroup(month);
+      const group = rows[0] && rows[0].sede;
+      const ventas = salesByGroup[group] ?? rows.reduce((acc, row) => acc + (rowSales(row) || 0), 0);
       const target = sum(rows, "target");
       return {
         leads,
@@ -1632,6 +1649,45 @@
         if (label.includes("remedios")) result.isrem = Number(row.sales || 0);
       });
       return result;
+    }
+
+    function commercialCourseSales(row) {
+      if (!row || selectedMonth().key !== "jul_2026" || !Array.isArray(commercialData.courses)) return null;
+      const groupLabel = row.sede === "cba" ? "cordoba" : row.sede === "vcp" ? "cristo obrero" : "remedios";
+      const rowCourse = normalizeMetaText(row.course);
+      let total = 0;
+      let foundExactSales = false;
+      commercialData.courses.forEach(courseRow => {
+        const sede = normalizeMetaText(courseRow.sede);
+        if (!sede.includes(groupLabel)) return;
+        const courseName = normalizeMetaText(`${courseRow.course} ${courseRow.code}`);
+        if (!reportCourseMatchesCommercial_(rowCourse, courseName)) return;
+        if (courseRow.sales === undefined || courseRow.sales === null) return;
+        foundExactSales = true;
+        total += Number(courseRow.sales || 0);
+      });
+      return foundExactSales ? total : null;
+    }
+
+    function reportCourseMatchesCommercial_(reportCourse, commercialCourse) {
+      const has = text => commercialCourse.includes(text);
+      if (reportCourse.includes("mueble")) return has("mueble");
+      if (reportCourse.includes("cerra")) return has("cerraj");
+      if (reportCourse.includes("sold")) return has("sold");
+      if (reportCourse.includes("cnc")) return has("cnc") || has("procnc");
+      if (reportCourse.includes("micro")) return has("micro");
+      if (reportCourse.includes("impres")) return has("impres") || has("impr3d");
+      if (reportCourse.includes("plomer")) return has("plomer");
+      if (reportCourse.includes("molder")) return has("molder");
+      if (reportCourse.includes("aire")) return has("aire") || has("insair") || has("airaco");
+      if (reportCourse.includes("fact")) return has("fact");
+      if (reportCourse.includes("refrig")) return has("refrig");
+      if (reportCourse.includes("farmacia")) return has("farmacia") || has("auxfar");
+      if (reportCourse.includes("upcycling")) return has("upcycling");
+      if (reportCourse.includes("ersep")) return has("ersep") || has("cat iii") || has("ehcat3");
+      if (reportCourse.includes("moto")) return has("moto") || has("mecmot") || has("elemot") || has("inymot");
+      if (reportCourse.includes("electric")) return has("electric") || has("iedomi") || has("ehcat3") || has("elemot");
+      return false;
     }
 
     function renderKpis() {
@@ -1716,14 +1772,15 @@
           ${rows.map(row => {
             const c = calcRow(row);
             const [cls, label] = statusFor(row);
+            const salesText = c.ventas === null ? "-" : fmt(c.ventas);
             return `<tr>
               <td>${row.course}</td>
               <td class="num">${fmt(row.leads)}</td>
-              <td class="num"><span class="readonly-sales">${fmt(rowSales(row))}</span></td>
-              <td class="num">${pct(c.conv)}</td>
+              <td class="num"><span class="readonly-sales">${salesText}</span></td>
+              <td class="num">${c.conv === null ? "-" : pct(c.conv)}</td>
               <td class="num">${fmt(row.target)}</td>
-              <td class="num">${pct(c.cumplimiento)}</td>
-              <td class="num">${fmt(c.faltanVentas)}</td>
+              <td class="num">${c.cumplimiento === null ? "-" : pct(c.cumplimiento)}</td>
+              <td class="num">${c.faltanVentas === null ? "-" : fmt(c.faltanVentas)}</td>
               <td class="num">${c.leadsDia.toLocaleString("es-AR", { maximumFractionDigits: 1 })}</td>
               <td><span class="status ${cls}">${label}</span></td>
             </tr>`;
