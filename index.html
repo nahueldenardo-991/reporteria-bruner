@@ -864,7 +864,7 @@
       ,
       { key: "jul_2026", label: "JUL 2026", hubspotTotal: 1583, online: [
         { id: "julio_no_mapeado", conversion: "Online/no mapeado", course: "No mapeado", leads: 3 }
-      ], cbaLeads: [166,132,179,81,39,34,77,60,78,21,119,14,144,0,0,30], cbaSales: [2,0,5,0,3,0,1,2,1,0,3,0,1,0,0,0], vcpLeads: [85,0,29,0,0,24,26,39,16], vcpSales: [5,0,3,0,0,2,2,3,0], isremLeads: [107,33,16,31], isremSales: [1,1,5,2] }
+      ], cbaLeads: [166,132,179,81,39,34,77,60,78,21,119,14,144,0,0,30], cbaSales: [2,2,5,3,4,2,4,2,2,2,2,0,5,0,0,6], vcpLeads: [85,0,29,0,0,24,26,39,16], vcpSales: [3,4,6,0,1,2,2,4,8], isremLeads: [107,33,16,31], isremSales: [0,2,7,3] }
     ];
 
     const commercialData = {
@@ -1585,7 +1585,7 @@
       const snapshot = commercialSnapshotForMonth(month);
       if (snapshot) {
         const exact = commercialCourseSales(row);
-        return exact === null ? null : exact;
+        return exact === null ? Number(row.baseSales || 0) : exact;
       }
       return Number(row.baseSales || 0);
     }
