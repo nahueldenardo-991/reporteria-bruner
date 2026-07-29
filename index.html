@@ -1626,7 +1626,7 @@
       const result = {};
       if (!snapshot || !Array.isArray(snapshot.bySede)) return result;
       snapshot.bySede.forEach(row => {
-        const label = normalize(row.label);
+        const label = normalizeMetaText(row.label);
         if (label.includes("cordoba")) result.cba = Number(row.sales || 0);
         if (label.includes("cristo obrero") || label.includes("villa carlos paz")) result.vcp = Number(row.sales || 0);
         if (label.includes("remedios")) result.isrem = Number(row.sales || 0);
