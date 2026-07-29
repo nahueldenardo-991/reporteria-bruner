@@ -608,14 +608,14 @@
         <article class="card">
           <div class="section-head">
             <h2>Top CBA por leads</h2>
-            <span class="pill">Junio</span>
+            <span class="pill" data-month-pill>Mes</span>
           </div>
           <div class="body"><div class="bars" id="cbaBars"></div></div>
         </article>
         <article class="card">
           <div class="section-head">
             <h2>Top VCP por leads</h2>
-            <span class="pill">Junio</span>
+            <span class="pill" data-month-pill>Mes</span>
           </div>
           <div class="body"><div class="bars" id="vcpBars"></div></div>
         </article>
@@ -623,7 +623,7 @@
       <article class="card" style="margin-top: 14px;">
         <div class="section-head">
           <h2>Top ISREM por leads</h2>
-          <span class="pill">Junio</span>
+          <span class="pill" data-month-pill>Mes</span>
         </div>
         <div class="body"><div class="bars" id="isremBars"></div></div>
       </article>
@@ -632,7 +632,7 @@
     <section id="cba" class="view">
       <article class="card">
         <div class="section-head">
-          <h2>CBA Â· Cordoba Capital</h2>
+          <h2>CBA - Cordoba Capital</h2>
           <span class="pill">Ventas desde planillas</span>
         </div>
         <div class="table-wrap"><table id="cbaTable"></table></div>
@@ -2177,6 +2177,9 @@
       const data = currentData();
       const month = selectedMonth();
       document.querySelector("h1").textContent = `Reporteria ${month.label} | Instituto Bruner`;
+      document.querySelectorAll("[data-month-pill]").forEach(pill => {
+        pill.textContent = month.label;
+      });
       renderKpis();
       renderSummary();
       renderCourseTable("cbaTable", data.cba);
