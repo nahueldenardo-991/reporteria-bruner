@@ -1542,6 +1542,7 @@
     const sum = (rows, key) => rows.reduce((acc, row) => acc + (Number(row[key]) || 0), 0);
     function rowSales(row) {
       const month = selectedMonth();
+      if (officialSalesOnly(month)) return null;
       const snapshot = commercialSnapshotForMonth(month);
       if (snapshot) {
         const exact = commercialCourseSales(row);
@@ -1616,6 +1617,10 @@
       return commercialData.currentMonth;
     }
 
+    function officialSalesOnly(month = selectedMonth()) {
+      return Number.isFinite(Number(month && month.officialSales)) && !month.officialSalesBySede;
+    }
+
     function commercialSalesByGroup(month) {
       const snapshot = commercialSnapshotForMonth(month);
       const result = {};
@@ -1681,7 +1686,7 @@
       const online = sum(data.online, "leads");
       const mapped = cba.leads + vcp.leads + isrem.leads;
       const commercialSnapshot = commercialSnapshotForMonth(month);
-      const hasOfficialOnly = Number.isFinite(Number(month.officialSales)) && !month.officialSalesBySede;
+      const hasOfficialOnly = officialSalesOnly(month);
       const totalVentas = commercialSnapshot ? Number(commercialSnapshot.sales || 0) : hasOfficialOnly ? Number(month.officialSales) : cbaVentas + vcpVentas + isremVentas;
       const totalTarget = cba.target + vcp.target + isrem.target;
       const ventasNote = commercialSnapshot
@@ -1720,7 +1725,7 @@
       const mapped = cba.leads + vcp.leads + isrem.leads;
       const control = mapped + online;
       const commercialSnapshot = commercialSnapshotForMonth(month);
-      const hasOfficialOnly = Number.isFinite(Number(month.officialSales)) && !month.officialSalesBySede;
+      const hasOfficialOnly = officialSalesOnly(month);
       const totalVentas = commercialSnapshot ? Number(commercialSnapshot.sales || 0) : hasOfficialOnly ? Number(month.officialSales) : cbaVentas + vcpVentas + isremVentas;
       const rows = [
         ["CBA", cba.leads, hasOfficialOnly ? "Pendiente" : cbaVentas, hasOfficialOnly ? "-" : pct(cba.leads ? cbaVentas / cba.leads : 0), cba.target, hasOfficialOnly ? "-" : pct(cba.target ? cbaVentas / cba.target : 0)],
@@ -1742,6 +1747,7 @@
 
     function renderCourseTable(tableId, rows) {
       const total = totals(rows);
+      const hasOfficialOnly = officialSalesOnly();
       document.getElementById(tableId).innerHTML = `
         <thead>
           <tr>
@@ -1754,23 +1760,23 @@
           ${rows.map(row => {
             const c = calcRow(row);
             const [cls, label] = statusFor(row);
-            const salesText = c.ventas === null ? "-" : fmt(c.ventas);
+            const salesText = hasOfficialOnly ? "Pendiente" : c.ventas === null ? "-" : fmt(c.ventas);
             return `<tr>
               <td>${row.course}</td>
               <td class="num">${fmt(row.leads)}</td>
               <td class="num"><span class="readonly-sales">${salesText}</span></td>
-              <td class="num">${c.conv === null ? "-" : pct(c.conv)}</td>
+              <td class="num">${hasOfficialOnly || c.conv === null ? "-" : pct(c.conv)}</td>
               <td class="num">${fmt(row.target)}</td>
-              <td class="num">${c.cumplimiento === null ? "-" : pct(c.cumplimiento)}</td>
-              <td class="num">${c.faltanVentas === null ? "-" : fmt(c.faltanVentas)}</td>
+              <td class="num">${hasOfficialOnly || c.cumplimiento === null ? "-" : pct(c.cumplimiento)}</td>
+              <td class="num">${hasOfficialOnly || c.faltanVentas === null ? "-" : fmt(c.faltanVentas)}</td>
               <td class="num">${c.leadsDia.toLocaleString("es-AR", { maximumFractionDigits: 1 })}</td>
-              <td><span class="status ${cls}">${label}</span></td>
+              <td><span class="status ${hasOfficialOnly ? "empty" : cls}">${hasOfficialOnly ? "Pendiente" : label}</span></td>
             </tr>`;
           }).join("")}
           <tr class="total">
-            <td>Total</td><td class="num">${fmt(total.leads)}</td><td class="num">${fmt(total.ventas)}</td>
-            <td class="num">${pct(total.conv)}</td><td class="num">${fmt(total.target)}</td>
-            <td class="num">${pct(total.cumplimiento)}</td><td class="num">${fmt(Math.max(0, total.target - total.ventas))}</td>
+            <td>Total</td><td class="num">${fmt(total.leads)}</td><td class="num">${hasOfficialOnly ? "Pendiente" : fmt(total.ventas)}</td>
+            <td class="num">${hasOfficialOnly ? "-" : pct(total.conv)}</td><td class="num">${fmt(total.target)}</td>
+            <td class="num">${hasOfficialOnly ? "-" : pct(total.cumplimiento)}</td><td class="num">${hasOfficialOnly ? "-" : fmt(Math.max(0, total.target - total.ventas))}</td>
             <td class="num">${(total.leads / Math.max(1, state.config.elapsedDays)).toLocaleString("es-AR", { maximumFractionDigits: 1 })}</td><td></td>
           </tr>
         </tbody>`;
@@ -2326,11 +2332,20 @@
     function exportCsv() {
       const data = currentData();
       const month = selectedMonth();
+      const hasOfficialOnly = officialSalesOnly(month);
       const rows = [["Sede", "Curso", "Leads", "Ventas", "Conversion", "Objetivo ventas", "Cumplimiento"]];
       for (const [sede, list] of [["CBA", data.cba], ["VCP", data.vcp], ["ISREM", data.isrem]]) {
         list.forEach(row => {
           const c = calcRow(row);
-          rows.push([sede, row.course, row.leads, c.ventas, (c.conv * 100).toFixed(1) + "%", row.target, (c.cumplimiento * 100).toFixed(1) + "%"]);
+          rows.push([
+            sede,
+            row.course,
+            row.leads,
+            hasOfficialOnly || c.ventas === null ? "Pendiente" : c.ventas,
+            hasOfficialOnly || c.conv === null ? "-" : (c.conv * 100).toFixed(1) + "%",
+            row.target,
+            hasOfficialOnly || c.cumplimiento === null ? "-" : (c.cumplimiento * 100).toFixed(1) + "%"
+          ]);
         });
       }
       const csv = rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")).join("\n");
