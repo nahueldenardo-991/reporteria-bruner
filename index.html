@@ -865,7 +865,7 @@
       ,
       { key: "jul_2026", label: "JUL 2026", hubspotTotal: 1718, online: [
         { id: "julio_no_mapeado", conversion: "Online/no mapeado", course: "No mapeado", leads: 3 }
-      ], cbaLeads: [169,144,182,90,42,36,86,70,96,22,128,14,165,0,0,35], cbaSales: [0,8,0,6,9,0,0,0,0,0,2,0,0,0,0,0], vcpLeads: [83,0,31,0,20,23,28,40,18], vcpSales: [0,10,0,0,11,21,0,0,0], isremLeads: [107,39,16,31], isremSales: [8,0,16,6] }
+      ], officialSales: 95, officialSalesNote: "Oficial panel asesoras: 111 inscriptos - 16 becas. Desglose por sede pendiente de feed historico.", cbaLeads: [169,144,182,90,42,36,86,70,96,22,128,14,165,0,0,35], cbaSales: [0,8,0,6,9,0,0,0,0,0,2,0,0,0,0,0], vcpLeads: [83,0,31,0,20,23,28,40,18], vcpSales: [0,10,0,0,11,21,0,0,0], isremLeads: [107,39,16,31], isremSales: [8,0,16,6] }
       ,
       { key: "ago_2026", label: "AGO 2026", hubspotTotal: 126, online: [
         { id: "agosto_no_mapeado", conversion: "Online/no mapeado", course: "No mapeado", leads: 0 }
@@ -873,21 +873,21 @@
     ];
 
     const commercialData = {
-      "updatedAt": "05/08/2026 12:11",
+      "updatedAt": "05/08/2026 12:57",
       "source": "Inscripcion Bruner Instituto (Respuestas) + Base Historica",
       "currentMonth": {
             "label": "Agosto 2026",
             "through": "05/08/2026",
-            "enrollments": 7,
-            "sales": 4,
+            "enrollments": 9,
+            "sales": 6,
             "scholarships": 3,
             "bySede": [
                   {
                         "label": "Córdoba",
-                        "enrollments": 6,
-                        "sales": 3,
+                        "enrollments": 8,
+                        "sales": 5,
                         "scholarships": 3,
-                        "occupied": 6
+                        "occupied": 8
                   },
                   {
                         "label": "Cristo Obrero",
@@ -904,6 +904,13 @@
                         "sales": 3,
                         "scholarships": 0,
                         "occupied": 3
+                  },
+                  {
+                        "label": "Susi",
+                        "enrollments": 2,
+                        "sales": 2,
+                        "scholarships": 0,
+                        "occupied": 2
                   },
                   {
                         "label": "Meli",
@@ -1674,15 +1681,18 @@
       const online = sum(data.online, "leads");
       const mapped = cba.leads + vcp.leads + isrem.leads;
       const commercialSnapshot = commercialSnapshotForMonth(month);
-      const totalVentas = commercialSnapshot ? Number(commercialSnapshot.sales || 0) : cbaVentas + vcpVentas + isremVentas;
+      const hasOfficialOnly = Number.isFinite(Number(month.officialSales)) && !month.officialSalesBySede;
+      const totalVentas = commercialSnapshot ? Number(commercialSnapshot.sales || 0) : hasOfficialOnly ? Number(month.officialSales) : cbaVentas + vcpVentas + isremVentas;
       const totalTarget = cba.target + vcp.target + isrem.target;
       const ventasNote = commercialSnapshot
         ? `Reales Drive - ${fmt(commercialSnapshot.enrollments || 0)} ocupados / ${fmt(commercialSnapshot.scholarships || 0)} becas`
+        : hasOfficialOnly
+        ? month.officialSalesNote || "Ventas oficiales del panel de asesoras"
         : `Objetivo ${fmt(totalTarget)} - Cumpl ${pct(totalTarget ? totalVentas / totalTarget : 0)}`;
       const cards = [
-        ["Leads CBA", cba.leads, `Ventas ${fmt(cbaVentas)} - Conv ${pct(cba.leads ? cbaVentas / cba.leads : 0)}`],
-        ["Leads VCP", vcp.leads, `Ventas ${fmt(vcpVentas)} - Conv ${pct(vcp.leads ? vcpVentas / vcp.leads : 0)}`],
-        ["Leads ISREM", isrem.leads, `Ventas ${fmt(isremVentas)} - Conv ${pct(isrem.leads ? isremVentas / isrem.leads : 0)}`],
+        ["Leads CBA", cba.leads, hasOfficialOnly ? "Ventas por sede: pendiente feed historico" : `Ventas ${fmt(cbaVentas)} - Conv ${pct(cba.leads ? cbaVentas / cba.leads : 0)}`],
+        ["Leads VCP", vcp.leads, hasOfficialOnly ? "Ventas por sede: pendiente feed historico" : `Ventas ${fmt(vcpVentas)} - Conv ${pct(vcp.leads ? vcpVentas / vcp.leads : 0)}`],
+        ["Leads ISREM", isrem.leads, hasOfficialOnly ? "Ventas por sede: pendiente feed historico" : `Ventas ${fmt(isremVentas)} - Conv ${pct(isrem.leads ? isremVentas / isrem.leads : 0)}`],
         ["Ventas totales", totalVentas, ventasNote],
         ["Online/no mapeado", online, "Separado de sedes"],
         ["Total del mes", month.hubspotTotal, `${fmt(mapped)} sabana + ${fmt(online)} separado`]
@@ -1710,13 +1720,14 @@
       const mapped = cba.leads + vcp.leads + isrem.leads;
       const control = mapped + online;
       const commercialSnapshot = commercialSnapshotForMonth(month);
-      const totalVentas = commercialSnapshot ? Number(commercialSnapshot.sales || 0) : cbaVentas + vcpVentas + isremVentas;
+      const hasOfficialOnly = Number.isFinite(Number(month.officialSales)) && !month.officialSalesBySede;
+      const totalVentas = commercialSnapshot ? Number(commercialSnapshot.sales || 0) : hasOfficialOnly ? Number(month.officialSales) : cbaVentas + vcpVentas + isremVentas;
       const rows = [
-        ["CBA", cba.leads, cbaVentas, pct(cba.leads ? cbaVentas / cba.leads : 0), cba.target, pct(cba.target ? cbaVentas / cba.target : 0)],
-        ["VCP", vcp.leads, vcpVentas, pct(vcp.leads ? vcpVentas / vcp.leads : 0), vcp.target, pct(vcp.target ? vcpVentas / vcp.target : 0)],
-        ["ISREM", isrem.leads, isremVentas, pct(isrem.leads ? isremVentas / isrem.leads : 0), isrem.target, pct(isrem.target ? isremVentas / isrem.target : 0)],
+        ["CBA", cba.leads, hasOfficialOnly ? "Pendiente" : cbaVentas, hasOfficialOnly ? "-" : pct(cba.leads ? cbaVentas / cba.leads : 0), cba.target, hasOfficialOnly ? "-" : pct(cba.target ? cbaVentas / cba.target : 0)],
+        ["VCP", vcp.leads, hasOfficialOnly ? "Pendiente" : vcpVentas, hasOfficialOnly ? "-" : pct(vcp.leads ? vcpVentas / vcp.leads : 0), vcp.target, hasOfficialOnly ? "-" : pct(vcp.target ? vcpVentas / vcp.target : 0)],
+        ["ISREM", isrem.leads, hasOfficialOnly ? "Pendiente" : isremVentas, hasOfficialOnly ? "-" : pct(isrem.leads ? isremVentas / isrem.leads : 0), isrem.target, hasOfficialOnly ? "-" : pct(isrem.target ? isremVentas / isrem.target : 0)],
         ["Online / no mapeado", online, "-", "-", "-", "-"],
-        ["Total conciliado", control, totalVentas, "-", cba.target + vcp.target + isrem.target, commercialSnapshot ? "Ventas reales Drive" : "-"]
+        ["Total conciliado", control, totalVentas, "-", cba.target + vcp.target + isrem.target, commercialSnapshot ? "Ventas reales Drive" : hasOfficialOnly ? "Total oficial" : "-"]
       ];
       document.getElementById("summaryTable").innerHTML = `
         <thead><tr><th>Grupo</th><th class="num">Leads</th><th class="num">Ventas</th><th class="num">Conv%</th><th class="num">Obj. ventas</th><th class="num">Cumpl%</th></tr></thead>
