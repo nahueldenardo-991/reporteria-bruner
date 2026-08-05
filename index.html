@@ -865,7 +865,7 @@
       ,
       { key: "jul_2026", label: "JUL 2026", hubspotTotal: 1718, online: [
         { id: "julio_no_mapeado", conversion: "Online/no mapeado", course: "No mapeado", leads: 3 }
-      ], officialSales: 95, officialSalesNote: "Oficial panel asesoras: 111 inscriptos - 16 becas. Desglose por sede pendiente de feed historico.", cbaLeads: [169,144,182,90,42,36,86,70,96,22,128,14,165,0,0,35], cbaSales: [0,8,0,6,9,0,0,0,0,0,2,0,0,0,0,0], vcpLeads: [83,0,31,0,20,23,28,40,18], vcpSales: [0,10,0,0,11,21,0,0,0], isremLeads: [107,39,16,31], isremSales: [8,0,16,6] }
+      ], officialSales: 95, officialSalesBySede: { cba: 50, vcp: 33, isrem: 12 }, officialSalesNote: "Cierre validado desde Drive: 111 inscriptos - 16 becas = 95 ventas.", cbaLeads: [169,144,182,90,42,36,86,70,96,22,128,14,165,0,0,35], cbaSales: [2,4,9,4,4,2,5,2,2,3,2,0,5,0,0,6], vcpLeads: [83,0,31,0,20,23,28,40,18], vcpSales: [3,4,5,0,1,2,2,4,12], isremLeads: [107,39,16,31], isremSales: [0,2,7,3] }
       ,
       { key: "ago_2026", label: "AGO 2026", hubspotTotal: 126, online: [
         { id: "agosto_no_mapeado", conversion: "Online/no mapeado", course: "No mapeado", leads: 0 }
@@ -1687,12 +1687,15 @@
       const mapped = cba.leads + vcp.leads + isrem.leads;
       const commercialSnapshot = commercialSnapshotForMonth(month);
       const hasOfficialOnly = officialSalesOnly(month);
+      const hasOfficialBreakdown = Number.isFinite(Number(month.officialSales)) && !!month.officialSalesBySede;
       const totalVentas = commercialSnapshot ? Number(commercialSnapshot.sales || 0) : hasOfficialOnly ? Number(month.officialSales) : cbaVentas + vcpVentas + isremVentas;
       const totalTarget = cba.target + vcp.target + isrem.target;
       const ventasNote = commercialSnapshot
         ? `Reales Drive - ${fmt(commercialSnapshot.enrollments || 0)} ocupados / ${fmt(commercialSnapshot.scholarships || 0)} becas`
         : hasOfficialOnly
         ? month.officialSalesNote || "Ventas oficiales del panel de asesoras"
+        : hasOfficialBreakdown
+        ? month.officialSalesNote || `Cierre validado - objetivo ${fmt(totalTarget)}`
         : `Objetivo ${fmt(totalTarget)} - Cumpl ${pct(totalTarget ? totalVentas / totalTarget : 0)}`;
       const cards = [
         ["Leads CBA", cba.leads, hasOfficialOnly ? "Ventas por sede: pendiente feed historico" : `Ventas ${fmt(cbaVentas)} - Conv ${pct(cba.leads ? cbaVentas / cba.leads : 0)}`],
@@ -1726,13 +1729,14 @@
       const control = mapped + online;
       const commercialSnapshot = commercialSnapshotForMonth(month);
       const hasOfficialOnly = officialSalesOnly(month);
+      const hasOfficialBreakdown = Number.isFinite(Number(month.officialSales)) && !!month.officialSalesBySede;
       const totalVentas = commercialSnapshot ? Number(commercialSnapshot.sales || 0) : hasOfficialOnly ? Number(month.officialSales) : cbaVentas + vcpVentas + isremVentas;
       const rows = [
         ["CBA", cba.leads, hasOfficialOnly ? "Pendiente" : cbaVentas, hasOfficialOnly ? "-" : pct(cba.leads ? cbaVentas / cba.leads : 0), cba.target, hasOfficialOnly ? "-" : pct(cba.target ? cbaVentas / cba.target : 0)],
         ["VCP", vcp.leads, hasOfficialOnly ? "Pendiente" : vcpVentas, hasOfficialOnly ? "-" : pct(vcp.leads ? vcpVentas / vcp.leads : 0), vcp.target, hasOfficialOnly ? "-" : pct(vcp.target ? vcpVentas / vcp.target : 0)],
         ["ISREM", isrem.leads, hasOfficialOnly ? "Pendiente" : isremVentas, hasOfficialOnly ? "-" : pct(isrem.leads ? isremVentas / isrem.leads : 0), isrem.target, hasOfficialOnly ? "-" : pct(isrem.target ? isremVentas / isrem.target : 0)],
         ["Online / no mapeado", online, "-", "-", "-", "-"],
-        ["Total conciliado", control, totalVentas, "-", cba.target + vcp.target + isrem.target, commercialSnapshot ? "Ventas reales Drive" : hasOfficialOnly ? "Total oficial" : "-"]
+        ["Total conciliado", control, totalVentas, "-", cba.target + vcp.target + isrem.target, commercialSnapshot ? "Ventas reales Drive" : hasOfficialOnly || hasOfficialBreakdown ? "Total oficial" : "-"]
       ];
       document.getElementById("summaryTable").innerHTML = `
         <thead><tr><th>Grupo</th><th class="num">Leads</th><th class="num">Ventas</th><th class="num">Conv%</th><th class="num">Obj. ventas</th><th class="num">Cumpl%</th></tr></thead>
